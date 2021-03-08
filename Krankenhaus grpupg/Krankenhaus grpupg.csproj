@@ -45,9 +45,20 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simulation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HospitalLibrary\HospitalLibrary.csproj">
+      <Project>{ee9b64cd-45e4-4723-a52c-e146e91e2bfb}</Project>
+      <Name>HospitalLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoggerLibrary\LoggerLibrary.csproj">
+      <Project>{420a6763-e851-4604-a85c-c5a9fce168c1}</Project>
+      <Name>LoggerLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
