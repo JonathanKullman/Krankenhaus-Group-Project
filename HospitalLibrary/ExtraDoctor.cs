@@ -12,7 +12,7 @@ namespace HospitalLibrary
         public bool BurnedOut { get; set; }
         public ExtraDoctor()
         {
-
+            
         }
     }
 }
