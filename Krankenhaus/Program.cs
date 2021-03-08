@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using HospitalLibrary;
 
 namespace Krankenhaus
 {
@@ -12,6 +13,7 @@ namespace Krankenhaus
             int nrOfPatients = ReadInt();
             var simulationNr1 = new Simulation(nrOfPatients);
 
+            
 
 
 
