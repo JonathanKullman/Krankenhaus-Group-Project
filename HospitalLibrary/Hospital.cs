@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Krankenhaus_grpupg
+namespace HospitalLibrary
 {
-    class Hospital
+    public class Hospital
     {
+
     }
 }
