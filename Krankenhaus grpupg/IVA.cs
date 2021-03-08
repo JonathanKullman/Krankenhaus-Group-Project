@@ -8,5 +8,6 @@ namespace Krankenhaus_grpupg
 {
     class IVA
     {
+
     }
 }
