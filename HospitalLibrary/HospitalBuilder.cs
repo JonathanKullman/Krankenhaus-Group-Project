@@ -4,12 +4,12 @@ using System.Text;
 
 namespace HospitalLibrary
 {
-    public class HospitalBuilder
+    public static class HospitalBuilder
     {
 
-        public Hospital CreateHospital()
+        public static Hospital CreateHospital(int nrOfPatients)
         {
-            return new Hospital();
+            return new Hospital(nrOfPatients);
         }
         public static string GenerateName()
         {
@@ -134,12 +134,12 @@ namespace HospitalLibrary
         }
         internal static List<Patient> GeneratePatientList(int nrOfPatients)
         {
-            var extraDoctors = new List<Patient>();
-            while (extraDoctors.Count != nrOfPatients)
+            var patients = new List<Patient>();
+            while (patients.Count != nrOfPatients)
             {
-                extraDoctors.Add(new Patient());
+                patients.Add(new Patient());
             }
-            return extraDoctors;
+            return patients;
         }
     }
 }

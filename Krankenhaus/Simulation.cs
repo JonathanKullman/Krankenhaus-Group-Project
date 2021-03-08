@@ -15,10 +15,9 @@ namespace Krankenhaus
         public DateTime Start { get; set; }
         public int TickCounter { get; set; }
         public DateTime End { get; set; }
-        public Simulation()
+        public Simulation(int nrOfPatients)
         {
-            var builder = new HospitalBuilder();
-            this.Hospital = builder.CreateHospital();
+            this.Hospital = HospitalBuilder.CreateHospital(nrOfPatients);
         }
         public async Task StartTicker()
         {
