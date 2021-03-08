@@ -6,5 +6,6 @@ namespace LoggerLibrary
 {
     class WriteToFile
     {
+
     }
 }

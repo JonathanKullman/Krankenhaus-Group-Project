@@ -9,6 +9,8 @@ namespace Krankenhaus
         static void Main(string[] args)
         {
             Console.WriteLine("Test stavas ju med ä. Täst.");
+            Console.Beep();
+            Console.WriteLine();
         }
     }
 }
