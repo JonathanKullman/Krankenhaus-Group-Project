@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HospitalLibrary
 {
-    class ExtraDoctor
+    public class ExtraDoctor
     {
         public string Name { get; set; }
         public byte ExhaustedLevel { get; set; }

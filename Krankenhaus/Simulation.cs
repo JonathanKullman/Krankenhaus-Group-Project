@@ -8,7 +8,7 @@ using HospitalLibrary;
 
 namespace Krankenhaus
 {
-    class Simulation
+    public class Simulation
     {
         public Hospital Hospital { get; set; }
         public DateTime Start { get; set; }
