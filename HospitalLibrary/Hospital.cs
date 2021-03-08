@@ -8,7 +8,7 @@ namespace HospitalLibrary
 {
     public class Hospital
     {
-        public Queue<ExtraDoctor> ExtraDoctor { get; set; }
+        public List<ExtraDoctor> ExtraDoctors { get; set; }
 
         public AfterLife AfterLife { get; set; }
 
@@ -18,12 +18,18 @@ namespace HospitalLibrary
 
         public IVA Iva { get; set; }
 
-        public PatientQueue PatientQueue { get; set; }
-
-        static void GeneratePatientLine()
+        public List<PatientQueue> PatientQueue { get; set; }
+        public Hospital()
         {
+            this.ExtraDoctors = HospitalBuilder.GenerateExtraDoctorQueue();
+            this.AfterLife = new AfterLife();
+            this.CheckedOut = new CheckedOut();
+            this.Sanatorium = new Sanatorium();
+            this.Iva = new IVA();
+            this.PatientQueue = HospitalBuilder.GenerateExtraDoctorQueue();
 
         }
+
 
         static void CalculateSicknessQueue()
         {
