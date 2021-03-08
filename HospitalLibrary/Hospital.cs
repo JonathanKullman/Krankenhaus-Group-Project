@@ -18,7 +18,7 @@ namespace HospitalLibrary
         public List<Patient> PatientList { get; set; }
         public Hospital(int nrOfPatients)
         {
-            this.ExtraDoctors = HospitalBuilder.GenerateExtraDoctorQueue();
+            this.ExtraDoctors = HospitalBuilder.GenerateExtraDoctors();
             this.PatientList = HospitalBuilder.GeneratePatientList(nrOfPatients);
             this.AfterLife = new AfterLife();
             this.CheckedOut = new CheckedOut();
