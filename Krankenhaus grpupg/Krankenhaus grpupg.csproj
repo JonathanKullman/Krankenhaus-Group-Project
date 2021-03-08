@@ -43,10 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sanatorium.cs" />
-    <Compile Include="Hospital.cs" />
-    <Compile Include="IVA.cs" />
-    <Compile Include="PatientQueue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
