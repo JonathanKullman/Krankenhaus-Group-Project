@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LoggerLibrary
 {
-    class WriteToFile
+    public class WriteToFile
     {
 
     }
