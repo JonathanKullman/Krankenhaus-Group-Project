@@ -10,7 +10,7 @@ namespace Krankenhaus_grpupg
     {
         static void Main(string[] args)
         {
-
+            Console.WriteLine("Test");
         }
     }
 }
