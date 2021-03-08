@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HospitalLibrary
 {
-    interface IDepartment
+    public interface IDepartment
     {
         public int Risk { get; set; }
         public int Chance { get; set; }

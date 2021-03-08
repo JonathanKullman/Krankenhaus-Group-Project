@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HospitalLibrary
 {
-    class Sanatorium : IDepartment
+    public class Sanatorium : IDepartment
     {
         public int Risk { get; set; }
         public int Chance { get; set; }
