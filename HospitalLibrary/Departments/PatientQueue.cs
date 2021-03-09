@@ -21,10 +21,13 @@ namespace HospitalLibrary
         }
         public void OnTickChanges()
         {
-            var rng = new Random();
+            var tempArray = new Patient[Patients.Count];
 
-
-
+            for (int i = 0; i < Patients.Count; i++)
+            {
+                Patients.CopyTo(tempArray,i);
+                tempArray[i].CalculateNewHealth(this);
+            }
         }
     }
 }

@@ -19,6 +19,11 @@ namespace HospitalLibrary
             this.Name = HospitalBuilder.GenerateName();
             this.Birthday = DateTime.Now.AddDays(-rng.Next(1 * 365, 90 * 365)).Date;
             this.SicknessLevel = rng.Next(0, 10);
+            CheckPatientHealth();
+        }
+
+        internal void CheckPatientHealth()
+        {
             if (SicknessLevel == 0)
             {
                 IsHealthy = true;
@@ -35,6 +40,25 @@ namespace HospitalLibrary
                 IsDead = false;
                 TimeOfCheckOut = null;
             }
+        }
+        internal void CalculateNewHealth(IDepartment department)
+        {
+            var rng = new Random();
+            int rngValue = rng.Next(1,101);
+
+            if (SicknessLevel == 0 || SicknessLevel == 10)
+            {
+                return;
+            }
+            if (rngValue <= department.Risk)
+            {
+                SicknessLevel++;
+            }
+            else if (rngValue >= 100 - department.Chance)
+            {
+                SicknessLevel--;
+            }
+            CheckPatientHealth();
         }
     }
 }
