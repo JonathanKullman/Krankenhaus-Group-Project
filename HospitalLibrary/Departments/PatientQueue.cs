@@ -11,10 +11,10 @@ namespace HospitalLibrary
         public int NumOfPatientsAtStart { get; set; }
         public PatientQueue(int nrOfPatients)
         {
-            this.NumOfPatientsAtStart = nrOfPatients;
-            this.Risk = 80;
-            this.Chance = 5;
-            this.Patients = HospitalBuilder.GeneratePatientList(NumOfPatientsAtStart);
+            NumOfPatientsAtStart = nrOfPatients;
+            Risk = 80;
+            Chance = 5;
+            Patients = HospitalBuilder.GeneratePatientList(NumOfPatientsAtStart);
             OnTickChanges();
         }
         public void OnTickChanges()

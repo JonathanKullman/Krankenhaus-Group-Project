@@ -35,7 +35,7 @@ namespace HospitalLibrary
             {
                 if (CurrentExtraDoctor == null)
                 {
-                    return risk;
+                    return chan;
                 }
                 else
                 {
@@ -63,11 +63,11 @@ namespace HospitalLibrary
             while (PatientList.Count == MaxPatientList)
             {
                 var patient = hp.PatientQueue.Patients.Dequeue();
-                if (patient.IsDead)
+                if (patient.Condition == Condition.Deceased)
                 {
                     hp.AfterLife.DeadPatients.Add(patient);
                 }
-                else if (patient.IsHealthy)
+                else if (patient.Condition == Condition.Healthy)
                 {
                     hp.CheckedOut.HealthyPatients.Add(patient);
                 }

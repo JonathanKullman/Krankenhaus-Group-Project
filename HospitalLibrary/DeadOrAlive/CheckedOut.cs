@@ -7,5 +7,9 @@ namespace HospitalLibrary
     public class CheckedOut
     {
         public List<Patient> HealthyPatients { get; set; }
+        public CheckedOut()
+        {
+            HealthyPatients = new List<Patient>();
+        }
     }
 }

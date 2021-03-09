@@ -11,8 +11,8 @@ namespace HospitalLibrary
         public List<Patient> PatientList { get; set; } //Max 10
         public Sanatorium()
         {
-            this.Risk = 50;
-            this.Chance = 35;
+            Risk = 50;
+            Chance = 35;
         }
         public void OnTickChanges()
         {
