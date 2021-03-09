@@ -8,6 +8,7 @@ namespace HospitalLibrary
     {
         public int Risk { get; set; }
         public int Chance { get; set; }
+
         public virtual void OnTickChanges(Hospital hp) { }
     }
 }

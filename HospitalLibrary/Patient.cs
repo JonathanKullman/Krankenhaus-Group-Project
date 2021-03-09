@@ -4,21 +4,21 @@ using System.Text;
 
 namespace HospitalLibrary
 {
+    public enum Condition { Healthy, Sick, Deceased }
     public class Patient
     {
         public string Name { get; set; }
         public DateTime Birthday { get; set; }
         public int SicknessLevel { get; set; }
-        public bool IsDead { get; set; }
-        public bool IsHealthy { get; set; }
+        public Condition Condition { get; set; }
         public DateTime? TimeOfCheckOut { get; set; }
 
         public Patient()
         {
             var rng = new Random();
-            this.Name = HospitalBuilder.GenerateName();
-            this.Birthday = DateTime.Now.AddDays(-rng.Next(1 * 365, 90 * 365)).Date;
-            this.SicknessLevel = rng.Next(0, 10);
+            Name = HospitalBuilder.GenerateName();
+            Birthday = DateTime.Now.AddDays(-rng.Next(1 * 365, 90 * 365)).Date;
+            SicknessLevel = rng.Next(0, 10);
             CheckPatientHealth();
         }
 
@@ -26,18 +26,17 @@ namespace HospitalLibrary
         {
             if (SicknessLevel == 0)
             {
-                IsHealthy = true;
+                Condition = Condition.Healthy;
                 TimeOfCheckOut = DateTime.Now;
             }
             else if (SicknessLevel == 10)
             {
-                IsDead = true;
+                Condition = Condition.Deceased;
                 TimeOfCheckOut = DateTime.Now;
             }
             else
             {
-                IsHealthy = false;
-                IsDead = false;
+                Condition = Condition.Sick;
                 TimeOfCheckOut = null;
             }
         }

@@ -17,26 +17,22 @@ namespace HospitalLibrary
 
         public Hospital(int nrOfPatients)
         {
-            this.ExtraDoctors = HospitalBuilder.GenerateExtraDoctors();
+            ExtraDoctors = HospitalBuilder.GenerateExtraDoctors();
 
-            this.AfterLife = new AfterLife();
-            this.CheckedOut = new CheckedOut();
+            AfterLife = new AfterLife();
+            CheckedOut = new CheckedOut();
 
-            this.PatientQueue = new PatientQueue(nrOfPatients);
-            this.Iva = new IVA(this);
-            this.Sanatorium = new Sanatorium();
+            PatientQueue = new PatientQueue(nrOfPatients);
+            Iva = new IVA(this);
+            Sanatorium = new Sanatorium();
 
             
-
-
         }
         public void OnTick()
         {
             Iva.OnTickChanges(this);
             Sanatorium.OnTickChanges();
             PatientQueue.OnTickChanges();
-
-            
         }
 
     }
