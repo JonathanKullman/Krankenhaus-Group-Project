@@ -15,24 +15,27 @@ namespace HospitalLibrary
         public IVA Iva { get; set; }
         public PatientQueue PatientQueue { get; set; }
 
-        public List<Patient> PatientList { get; set; }
+        //public List<Patient> PatientList { get; set; }
         public Hospital(int nrOfPatients)
         {
             this.ExtraDoctors = HospitalBuilder.GenerateExtraDoctors();
-            this.PatientList = HospitalBuilder.GeneratePatientList(nrOfPatients);
+            //this.PatientList = HospitalBuilder.GeneratePatientList(nrOfPatients);
+
             this.AfterLife = new AfterLife();
             this.CheckedOut = new CheckedOut();
+
+            this.PatientQueue = new PatientQueue(nrOfPatients);
             this.Sanatorium = new Sanatorium();
             this.Iva = new IVA();
-            this.PatientQueue = new PatientQueue();
+            
 
 
         }
-
-
-        static void CalculateSicknessQueue()
+        public void OnTick()
         {
-
+            PatientQueue.OnTickChanges();
+            Sanatorium.OnTickChanges();
+            Iva.OnTickChanges();
         }
 
         static void FindAvailableCare()

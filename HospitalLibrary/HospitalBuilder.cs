@@ -6,11 +6,6 @@ namespace HospitalLibrary
 {
     public static class HospitalBuilder
     {
-
-        public static Hospital CreateHospital(int nrOfPatients)
-        {
-            return new Hospital(nrOfPatients);
-        }
         public static string GenerateName()
         {
             var rng = new Random();
@@ -132,12 +127,12 @@ namespace HospitalLibrary
             }
             return extraDoctors;
         }
-        internal static List<Patient> GeneratePatientList(int nrOfPatients)
+        internal static Queue<Patient> GeneratePatientList(int nrOfPatients)
         {
-            var patients = new List<Patient>();
+            var patients = new Queue<Patient>();
             while (patients.Count != nrOfPatients)
             {
-                patients.Add(new Patient());
+                patients.Enqueue(new Patient());
             }
             return patients;
         }

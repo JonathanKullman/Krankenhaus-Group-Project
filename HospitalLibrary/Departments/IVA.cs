@@ -11,5 +11,16 @@ namespace HospitalLibrary
         public int Unchanged { get; set; }
         public ExtraDoctor CurrentDoctor { get; set; }
         public Patient[] PatientList { get; set; } //Max 5
+        public IVA()
+        {
+            this.Risk = 10;
+            this.Chance = 70;
+            this.Unchanged = 20;
+
+        }
+        public void OnTickChanges()
+        { 
+
+        }
     }
 }
