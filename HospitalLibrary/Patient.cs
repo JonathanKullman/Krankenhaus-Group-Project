@@ -50,6 +50,7 @@ namespace HospitalLibrary
             {
                 return;
             }
+
             if (rngValue <= department.Risk)
             {
                 SicknessLevel++;

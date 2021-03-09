@@ -13,7 +13,7 @@ namespace Krankenhaus
             int nrOfPatients = ReadInt();
             var simulationNr1 = new Simulation(nrOfPatients);
 
-            
+
 
 
 

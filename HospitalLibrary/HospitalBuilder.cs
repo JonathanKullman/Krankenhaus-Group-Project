@@ -118,12 +118,12 @@ namespace HospitalLibrary
 
             return firstNames[rng.Next(0, firstNames.Length)] + " " + lastNames[rng.Next(0, lastNames.Length)];
         }
-        internal static List<ExtraDoctor> GenerateExtraDoctors()
+        internal static Queue<ExtraDoctor> GenerateExtraDoctors()
         {
-            var extraDoctors = new List<ExtraDoctor>();
+            var extraDoctors = new Queue<ExtraDoctor>();
             while (extraDoctors.Count != 10)
             {
-                extraDoctors.Add(new ExtraDoctor());
+                extraDoctors.Enqueue(new ExtraDoctor());
             }
             return extraDoctors;
         }

@@ -6,6 +6,6 @@ namespace HospitalLibrary
 {
     public class AfterLife
     {
-        public List<Patient> ListOfAfterLifePatient { get; set; }
+        public List<Patient> DeadPatients { get; set; }
     }
 }

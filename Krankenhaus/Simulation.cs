@@ -21,7 +21,7 @@ namespace Krankenhaus
         }
         static void OnEveryTick(object state)
         {
-            Hospital.OnTick();
+            //Hospital.OnTick();
         }
 
 

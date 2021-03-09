@@ -7,7 +7,6 @@ namespace HospitalLibrary
     {
         public int Risk { get; set; }
         public int Chance { get; set; }
-        public int Unchanged { get; set; }
         public Queue<Patient> Patients { get; set; }
         public int NumOfPatientsAtStart { get; set; }
         public PatientQueue(int nrOfPatients)
@@ -15,7 +14,6 @@ namespace HospitalLibrary
             this.NumOfPatientsAtStart = nrOfPatients;
             this.Risk = 80;
             this.Chance = 5;
-            this.Unchanged = 15;
             this.Patients = HospitalBuilder.GeneratePatientList(NumOfPatientsAtStart);
             OnTickChanges();
         }
@@ -28,6 +26,7 @@ namespace HospitalLibrary
                 Patients.CopyTo(tempArray,i);
                 tempArray[i].CalculateNewHealth(this);
             }
+
         }
     }
 }

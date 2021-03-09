@@ -6,6 +6,6 @@ namespace HospitalLibrary
 {
     public class CheckedOut
     {
-        public List<Patient> ListOfCheckedOutPaptient { get; set; }
+        public List<Patient> HealthyPatients { get; set; }
     }
 }
