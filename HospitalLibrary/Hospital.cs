@@ -17,7 +17,7 @@ namespace HospitalLibrary
 
         public Hospital(int nrOfPatients)
         {
-            ExtraDoctors = HospitalBuilder.GenerateExtraDoctors();
+            ExtraDoctors = HospitalManager.GenerateExtraDoctors();
 
             AfterLife = new AfterLife();
             CheckedOut = new CheckedOut();
@@ -31,7 +31,7 @@ namespace HospitalLibrary
         public void OnTick()
         {
             Iva.OnTickChanges(this);
-            Sanatorium.OnTickChanges();
+            Sanatorium.OnTickChanges(this);
             PatientQueue.OnTickChanges();
         }
 

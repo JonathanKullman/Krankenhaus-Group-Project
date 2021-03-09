@@ -4,10 +4,9 @@ using System.Text;
 
 namespace HospitalLibrary
 {
-    public class IVA : IDepartment
+    public class IVA : IDepartment, IDepartmentList
     {
         private int risk;
-
         public int Risk
         {
             get 
@@ -28,14 +27,13 @@ namespace HospitalLibrary
             set { risk = value; }
         }
         private int chance;
-
         public int Chance
         {
             get 
             {
                 if (CurrentExtraDoctor == null)
                 {
-                    return chan;
+                    return chance;
                 }
                 else
                 {
@@ -56,37 +54,18 @@ namespace HospitalLibrary
             this.CurrentExtraDoctor = hp.ExtraDoctors.Dequeue();
             OnTickChanges(hp);
         }
+        
         public void OnTickChanges(Hospital hp)
         {
 
-            while (PatientList.Count == MaxPatientList)
-            {
-                var patient = hp.PatientQueue.Patients.Dequeue();
-                if (patient.Condition == Condition.Deceased)
-                {
-                    hp.AfterLife.DeadPatients.Add(patient);
-                }
-                else if (patient.Condition == Condition.Healthy)
-                {
-                    hp.CheckedOut.HealthyPatients.Add(patient);
-                }
-                else
-                {
-                    hp.Iva.PatientList.Add(patient);
-                }
-            }
+            HospitalManager.CheckConditionThenTreatment(hp, this);
 
-            for (int i = 0; i < PatientList.Count; i++)
-            {
-                PatientList[i].CalculateNewHealth(this);
-            }
-
-            if (CurrentExtraDoctor != null)
+            if (CurrentExtraDoctor != null) //handles extraDoctors if they still exists
             {
                 CurrentExtraDoctor.ExhaustedLevel++;
                 if (CurrentExtraDoctor.ExhaustedLevel == 20)
                 {
-                    hp.PatientQueue.Patients.Enqueue(new Patient()); //läkaren behöver rehabiliteras
+                    hp.PatientQueue.PatientList.Enqueue(new Patient()); //läkaren behöver rehabiliteras
                     if (hp.ExtraDoctors.Count > 0)
                     {
                         CurrentExtraDoctor = hp.ExtraDoctors.Dequeue(); //sätt igång nästa läkare

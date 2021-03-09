@@ -13,7 +13,7 @@ namespace HospitalLibrary
         public ExtraDoctor()
         {
             var rng = new Random();
-            Name = HospitalBuilder.GenerateName();
+            Name = HospitalManager.GenerateName();
             ExhaustedLevel = 0;
             Competence = rng.Next(-10, 31);
         }

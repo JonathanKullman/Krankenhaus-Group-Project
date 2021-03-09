@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HospitalLibrary
 {
-    public enum Condition { Healthy, Sick, Deceased }
+    public enum Condition { Healthy = 0, Sick, Deceased = 10 }
     public class Patient
     {
         public string Name { get; set; }
@@ -16,7 +16,7 @@ namespace HospitalLibrary
         public Patient()
         {
             var rng = new Random();
-            Name = HospitalBuilder.GenerateName();
+            Name = HospitalManager.GenerateName();
             Birthday = DateTime.Now.AddDays(-rng.Next(1 * 365, 90 * 365)).Date;
             SicknessLevel = rng.Next(0, 10);
             CheckPatientHealth();

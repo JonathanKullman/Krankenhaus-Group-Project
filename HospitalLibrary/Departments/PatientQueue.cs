@@ -7,23 +7,23 @@ namespace HospitalLibrary
     {
         public int Risk { get; set; }
         public int Chance { get; set; }
-        public Queue<Patient> Patients { get; set; }
+        public Queue<Patient> PatientList { get; set; }
         public int NumOfPatientsAtStart { get; set; }
         public PatientQueue(int nrOfPatients)
         {
             NumOfPatientsAtStart = nrOfPatients;
             Risk = 80;
             Chance = 5;
-            Patients = HospitalBuilder.GeneratePatientList(NumOfPatientsAtStart);
+            PatientList = HospitalManager.GeneratePatientList(NumOfPatientsAtStart);
             OnTickChanges();
         }
         public void OnTickChanges()
         {
-            var tempArray = new Patient[Patients.Count];
+            var tempArray = new Patient[PatientList.Count];
 
-            for (int i = 0; i < Patients.Count; i++)
+            for (int i = 0; i < PatientList.Count; i++)
             {
-                Patients.CopyTo(tempArray,i);
+                PatientList.CopyTo(tempArray,i);
                 tempArray[i].CalculateNewHealth(this);
             }
 
