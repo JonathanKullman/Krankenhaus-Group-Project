@@ -18,9 +18,7 @@ namespace HospitalLibrary
         }
         public void OnTickChanges(Hospital hp)
         {
-
             HospitalManager.CheckConditionThenTreatment(hp, this);
-
         }
     }
 }

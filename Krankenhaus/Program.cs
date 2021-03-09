@@ -9,7 +9,7 @@ namespace Krankenhaus
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"How many patients?");
+            Console.WriteLine($"How many patients?"); 
             int nrOfPatients = ReadInt();
             var simulationNr1 = new Simulation(nrOfPatients);
 
