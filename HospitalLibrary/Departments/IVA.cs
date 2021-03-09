@@ -55,7 +55,6 @@ namespace HospitalLibrary
             this.Chance = 70;
             this.CurrentExtraDoctor = hp.ExtraDoctors.Dequeue();
             OnTickChanges(hp);
-
         }
         public void OnTickChanges(Hospital hp)
         {
