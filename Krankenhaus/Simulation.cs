@@ -14,27 +14,46 @@ namespace Krankenhaus
         public DateTime Start { get; set; }
         public int TickCounter { get; set; }
         public DateTime End { get; set; }
+        public bool isRunning { get; set; }
         public Simulation(int nrOfPatients)
         {
             this.Hospital = new Hospital(nrOfPatients);
             TickCounter = 1;
+            isRunning = true;
             Start = DateTime.Now;
             this.Timer = new Timer(new TimerCallback(EveryTick), null, 1000, 500);
         }
+        internal void Paus()
+        {
+            if (isRunning)
+            {
+                isRunning = false;
+            }
+            else
+            {
+                isRunning = true;
+            }
+
+
+        }
         internal void EveryTick(object state)
         {
-
-            Hospital.OnTick();
-            ToScreen();
-            TickCounter++;
-            if (Hospital.Iva.PatientList.Count == 0 && Hospital.Sanatorium.PatientList.Count == 0)
+            if (isRunning)
             {
-                Timer.Change(Timeout.Infinite, Timeout.Infinite);
-                Timer.Dispose();
-                Console.WriteLine("idhuAPISUdgOADGOA");
-                Console.ReadKey();
+                Hospital.OnTick();
+                ToScreen();
+                Console.WriteLine(Thread.CurrentThread.ManagedThreadId.ToString());
+                TickCounter++;
+                if (Hospital.Iva.PatientList.Count == 0 && Hospital.Sanatorium.PatientList.Count == 0)
+                {
+                    Timer.Change(Timeout.Infinite, Timeout.Infinite);
+                    Timer.Dispose();
+                    End = DateTime.Now;
+                    Console.WriteLine($"Simulation started at {Start}");
+                    Console.WriteLine($"Simulation ended at {End}");
+                    Console.ReadKey();
+                }
             }
-            
         }
 
         internal void ToScreen()

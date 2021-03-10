@@ -17,19 +17,12 @@ namespace Krankenhaus
 
 
             simulationNr1.EveryTick(null);
-            //Task.Run(() =>
-            //{
-            //    while (true)
-            //    {
-            //        simulationNr1.ToScreen();
-            //        simulationNr1.EveryTick(null);
-            //        Thread.Sleep(1000);
-            //    }
-
-            //});
-
+            while (true)
+            {
+                Console.ReadKey();
+                Console.WriteLine("Du har tryckt ner en tangent.");
+            }
             
-            Console.ReadKey();
 
 
 
