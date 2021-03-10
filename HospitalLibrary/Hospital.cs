@@ -8,17 +8,18 @@ namespace HospitalLibrary
 {
     public class Hospital
     {
-        public Queue<ExtraDoctor> ExtraDoctors { get; private set; }
+        private Queue<ExtraDoctor> extraDoctors;
         public AfterLife AfterLife { get; private set; }
         public CheckedOut CheckedOut { get; private set; }
         public Sanatorium Sanatorium { get; private set; }
         public IVA Iva { get; private set; }
         public PatientQueue PatientQueue { get; private set; }
-        public event EventHandler SendReport;
+        
+        public event EventHandler<SendReportEventArgs> SendReport;
 
         public Hospital(int nrOfPatients)
         {
-            ExtraDoctors = HospitalManager.GenerateExtraDoctors();
+            extraDoctors = HospitalManager.GenerateExtraDoctors();
 
             AfterLife = new AfterLife();
             CheckedOut = new CheckedOut();
@@ -31,36 +32,42 @@ namespace HospitalLibrary
         {
 
         }
-        public void OnTick()
+        public void OnTick(int currentTick)
         {
             Iva.OnTickChanges(this);
             Sanatorium.OnTickChanges(this);
             PatientQueue.OnTickChanges();
-
-            SendReport?.Invoke(this.Copy(), EventArgs.Empty);
+            SendReportEventArgs eArgs = new SendReportEventArgs(currentTick);
+            SendReport?.Invoke(this.Copy(), eArgs);
         }
         public Hospital Copy()
         {
             var hp = new Hospital();
-            hp.PatientQueue = (PatientQueue)this.PatientQueue.Clone();
-            hp.Iva = (IVA)this.Iva.Clone();
-            hp.Sanatorium = (Sanatorium)this.Sanatorium.Clone();
-            hp.AfterLife = this.AfterLife.Clone();
-            hp.CheckedOut = this.CheckedOut.Clone();
+            hp.PatientQueue = (PatientQueue)this.PatientQueue.Copy();
+            hp.Iva = (IVA)this.Iva.Copy();
+            hp.Sanatorium = (Sanatorium)this.Sanatorium.Copy();
+            hp.AfterLife = this.AfterLife.Copy();
+            hp.CheckedOut = this.CheckedOut.Copy();
 
-            var tempArray = new ExtraDoctor[this.ExtraDoctors.Count];
+            var tempArray = new ExtraDoctor[this.extraDoctors.Count];
 
-            hp.ExtraDoctors = new Queue<ExtraDoctor>();
+            hp.extraDoctors = new Queue<ExtraDoctor>();
 
-            this.ExtraDoctors.CopyTo(tempArray, 0);
+            this.extraDoctors.CopyTo(tempArray, 0);
 
-            for (int i = 0; i < ExtraDoctors.Count; i++)
+            for (int i = 0; i < extraDoctors.Count; i++)
             {
-                hp.ExtraDoctors.Enqueue(tempArray[i].Copy());
+                hp.extraDoctors.Enqueue(tempArray[i].Copy());
             }
-
-
             return hp;
+        }
+        internal ExtraDoctor DequeueExtraDoctor()
+        {
+            return extraDoctors.Dequeue();
+        }
+        internal int ExtraDoctorCount()
+        {
+            return extraDoctors.Count;
         }
     }
 }

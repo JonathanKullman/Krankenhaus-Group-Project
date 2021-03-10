@@ -31,7 +31,7 @@ namespace HospitalLibrary
             }
 
         }
-        public IDepartment Clone()
+        public IDepartment Copy()
         {
             var dep = new PatientQueue();
             
@@ -46,5 +46,6 @@ namespace HospitalLibrary
             }
             return dep;
         }
+        
     }
 }

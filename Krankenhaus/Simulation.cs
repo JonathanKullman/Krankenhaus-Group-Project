@@ -8,16 +8,16 @@ using LoggerLibrary;
 
 namespace Krankenhaus
 {
-    public class Simulation
+    internal class Simulation
     {
-        public Timer Timer { get; set; }
-        public Hospital Hospital { get; set; }
-        public DateTime Start { get; set; }
-        public int DayCounter { get; set; }
-        public DateTime End { get; set; }
-        public bool isRunning { get; set; }
-        public Logger Logger { get; set; }
-        public Simulation(int nrOfPatients)
+        private Timer Timer { get; }
+        private Hospital Hospital { get; }
+        private DateTime Start { get; set; }
+        private int DayCounter { get; set; }
+        private DateTime End { get; set; }
+        private bool isRunning { get; set; }
+        private Logger Logger { get; }
+        internal Simulation(int nrOfPatients)
         {
             this.Hospital = new Hospital(nrOfPatients);
             this.Logger = new Logger();
@@ -37,17 +37,16 @@ namespace Krankenhaus
             {
                 isRunning = true;
             }
-
-
         }
         internal void EveryTick(object state)
         {
             if (isRunning)
             {
-                Hospital.OnTick();
+                DayCounter++;
+                Hospital.OnTick(DayCounter);
                 ToScreen();
                 Console.WriteLine(Thread.CurrentThread.ManagedThreadId.ToString());
-                DayCounter++;
+                
                 if (Hospital.Iva.PatientList.Count == 0 && Hospital.Sanatorium.PatientList.Count == 0)
                 {
                     Timer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -59,9 +58,7 @@ namespace Krankenhaus
                 }
             }
         }
-
-
-        internal void ToScreen()
+        private void ToScreen()
         {
             Console.Clear();
 

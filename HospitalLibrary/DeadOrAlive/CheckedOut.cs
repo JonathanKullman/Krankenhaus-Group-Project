@@ -11,7 +11,7 @@ namespace HospitalLibrary
         {
             HealthyPatients = new List<Patient>();
         }
-        public CheckedOut Clone()
+        public CheckedOut Copy()
         {
             var hp = new CheckedOut();
             hp.HealthyPatients = new List<Patient>();

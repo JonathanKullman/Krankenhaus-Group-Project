@@ -51,7 +51,7 @@ namespace HospitalLibrary
             MaxPatientList = 5;
             this.Risk = 10;
             this.Chance = 70;
-            this.CurrentExtraDoctor = hp.ExtraDoctors.Dequeue();
+            this.CurrentExtraDoctor = hp.DequeueExtraDoctor();
             PatientList = new List<Patient>();
             OnTickChanges(hp);
         }
@@ -73,9 +73,9 @@ namespace HospitalLibrary
                 
                 if (CurrentExtraDoctor.ExhaustedLevel >= 20)
                 {
-                    if (hp.ExtraDoctors.Count > 0)
+                    if (hp.ExtraDoctorCount() > 0)
                     {
-                        CurrentExtraDoctor = hp.ExtraDoctors.Dequeue(); //sätt igång nästa läkare
+                        CurrentExtraDoctor = hp.DequeueExtraDoctor(); //sätt igång nästa läkare
                     }
                     else
                     {
@@ -86,7 +86,7 @@ namespace HospitalLibrary
 
 
         }
-        public IDepartment Clone()
+        public IDepartment Copy()
         {
             var dep = new IVA();
             dep.PatientList = new List<Patient>();

@@ -25,7 +25,7 @@ namespace HospitalLibrary
         {
             HospitalManager.CheckConditionThenTreatment(hp, this);
         }
-        public IDepartment Clone()
+        public IDepartment Copy()
         {
             var dep = new Sanatorium();
             dep.PatientList = new List<Patient>();

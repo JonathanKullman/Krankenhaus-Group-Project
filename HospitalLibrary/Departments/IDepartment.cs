@@ -10,7 +10,7 @@ namespace HospitalLibrary
         public int Chance { get; set; }
 
         public virtual void OnTickChanges(Hospital hp) { }
-        public IDepartment Clone();
+        public IDepartment Copy();
 
     }
 }
