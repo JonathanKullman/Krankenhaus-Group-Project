@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,35 +7,52 @@ namespace HospitalLibrary
 {
     public class Sanatorium : IDepartment, IDepartmentList
     {
-        public int Risk { get; set; }
-        public int Chance { get; set; }
-        public List<Patient> PatientList { get; set; } 
-        public int MaxPatientList { get; set; }
+        public int Risk { get; }
+        public int Chance { get; }
+
+        private List<Patient> patients;
+        public int MaxPatients { get; }
         public Sanatorium(Hospital hp)
         {
-            MaxPatientList = 10;
+            MaxPatients = 10;
             Risk = 50;
             Chance = 35;
-            PatientList = new List<Patient>();
+            patients = new List<Patient>();
             OnTickChanges(hp);
         }
-        public Sanatorium()
+        private Sanatorium(List<Patient> patients, int maxPatients, int risk, int chance)
         {
+            this.patients = patients;
         }
         public void OnTickChanges(Hospital hp)
         {
-            HospitalManager.CheckConditionThenTreatment(hp, this);
+            HospitalManager.CheckConditionAndTreat(hp, this);
         }
-        public IDepartment Copy()
+        public void AddPatient(Patient patient)
         {
-            var dep = new Sanatorium();
-            dep.PatientList = new List<Patient>();
-            for (int i = 0; i < PatientList.Count; i++)
-            {
-                dep.PatientList.Add(this.PatientList[i].Copy());
-            }
-
-            return dep;
+            patients.Add(patient);
+        }
+        public void RemovePatient(Patient patient)
+        {
+            patients.Remove(patient);
+        }
+        public int PatientsCount()
+        {
+            return patients.Count;
+        }
+        public IDepartment Clone()
+        {
+            var patientsCopy = new List<Patient>();
+            patients.ForEach(patient => patientsCopy.Add(patient.Clone()));
+            return new Sanatorium(patientsCopy, this.MaxPatients, this.Risk, this.Chance);
+        }
+        public Patient this[int i]
+        {
+            get { return patients[i]; }
+        }
+        public IEnumerator GetEnumerator()
+        {
+            return patients.GetEnumerator();
         }
     }
 }

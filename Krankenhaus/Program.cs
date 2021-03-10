@@ -21,15 +21,8 @@ namespace Krankenhaus
             {
                 Console.ReadKey();
                 simulationNr1.Paus();
-                Console.WriteLine("Du har tryckt ner en tangent.");
+                Console.WriteLine("\nYou have paused the simulator.");
             }
-            
-
-
-
-
-
-
         }
     /// <summary>
     /// Runs a TryParse-loop for integers. Prompts user to retry while it's not a number.

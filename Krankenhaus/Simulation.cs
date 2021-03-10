@@ -13,19 +13,21 @@ namespace Krankenhaus
         private Timer Timer { get; }
         private Hospital Hospital { get; }
         private DateTime Start { get; set; }
+        public int PatientsAtStart { get; }
         private int DayCounter { get; set; }
         private DateTime End { get; set; }
         private bool isRunning { get; set; }
         private Logger Logger { get; }
         internal Simulation(int nrOfPatients)
         {
+            PatientsAtStart = nrOfPatients;
             this.Hospital = new Hospital(nrOfPatients);
             this.Logger = new Logger();
             Hospital.SendReport += Logger.WriteToFile;
             DayCounter = 1;
             isRunning = true;
             Start = DateTime.Now;
-            this.Timer = new Timer(new TimerCallback(EveryTick), null, 1000, 500);
+            this.Timer = new Timer(new TimerCallback(EveryTick), null, 1000, 1000);
         }
         internal void Paus()
         {
@@ -47,7 +49,7 @@ namespace Krankenhaus
                 ToScreen();
                 Console.WriteLine(Thread.CurrentThread.ManagedThreadId.ToString());
                 
-                if (Hospital.Iva.PatientList.Count == 0 && Hospital.Sanatorium.PatientList.Count == 0)
+                if (Hospital.Iva.PatientsCount() == 0 && Hospital.Sanatorium.PatientsCount() == 0)
                 {
                     Timer.Change(Timeout.Infinite, Timeout.Infinite);
                     Timer.Dispose();
@@ -70,13 +72,12 @@ namespace Krankenhaus
             //CURRENT PATIENTS IN QUEUE DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t       <<< Patients in Queue [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{Hospital.PatientQueue.PatientList.Count}");
+            Console.Write($"{Hospital.PatientQueue.PatientsCount()}");
             Console.ResetColor();
             Console.Write("] >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            var tempArray = new Patient[Hospital.PatientQueue.PatientList.Count];
-            Hospital.PatientQueue.PatientList.CopyTo(tempArray, 0);
+            var tempArray = Hospital.PatientQueue.CopyPatientsToArray();
 
             for (int i = 0; i < tempArray.Length; i++)
             {
@@ -94,43 +95,16 @@ namespace Krankenhaus
                 Console.Write($"{tempArray[i].Birthday}");
             }
 
-
-
-            if (Hospital.Iva.CurrentExtraDoctor != null)
-            {
-                //CURRENT DOCTOR DISPLAY
-                Console.WriteLine($"\n\n\n\t\t\t\t\t      <<< Current Doctor At IVA >>>");
-                Console.WriteLine("\t\t\t______________________________________________________________________");
-
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.Write("\n\t                Name: ");
-                Console.ResetColor();
-
-                Console.Write($"{Hospital.Iva.CurrentExtraDoctor.Name}");
-                Console.ResetColor();
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("\t     Exhausted Level: ");
-                Console.ResetColor();
-                Console.Write($"{Hospital.Iva.CurrentExtraDoctor.ExhaustedLevel}");
-
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write("\t     Competence Level: ");
-                Console.ResetColor();
-                Console.Write($"{Hospital.Iva.CurrentExtraDoctor.Competence}");
-            }
-
             //EXTRA DOCTORS DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t      <<<   Extra Doctors [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{Hospital.ExtraDoctors.Count}");
+            Console.Write($"{Hospital.ExtraDoctorsCount()}");
             Console.ResetColor();
             Console.Write("]  >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            var tempDoctorArray = new ExtraDoctor[Hospital.ExtraDoctors.Count];
-            Hospital.ExtraDoctors.CopyTo(tempDoctorArray, 0);
 
-            foreach (var doctor in tempDoctorArray)
+            foreach (ExtraDoctor doctor in Hospital.CopyExtraDoctorsToArray())
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write("\n\t                Name: ");
@@ -147,36 +121,15 @@ namespace Krankenhaus
                 
             }
 
-            //IVA PATIENTS DISPLAY
-            Console.Write("\n\n\n\t\t\t\t\t      <<<   IVA Patients [");
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{Hospital.Iva.PatientList.Count}");
-            Console.ResetColor();
-            Console.Write("]  >>>\n");
-            Console.WriteLine("\t\t\t______________________________________________________________________");
-
-            foreach (var patient in Hospital.Iva.PatientList)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.Write("\n\t\t\t          Name: ");
-                Console.ResetColor();
-                Console.Write($"{patient.Name}");
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("\t     Sickness Level: ");
-                Console.ResetColor();
-                Console.Write($"{patient.SicknessLevel}");
-            }
-
-
             //SANATORIUM PATIENTS DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t  <<<   Sanatorium Patients [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{Hospital.Sanatorium.PatientList.Count}");
+            Console.Write($"{Hospital.Sanatorium.PatientsCount()}");
             Console.ResetColor();
             Console.Write("]  >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            foreach (var patient in Hospital.Sanatorium.PatientList)
+            foreach (Patient patient in Hospital.Sanatorium)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write("\n\t\t\t          Name: ");
@@ -188,16 +141,58 @@ namespace Krankenhaus
                 Console.Write($"{patient.SicknessLevel}");
             }
 
-
-            //AFTERLIFE PATIENTS DISPLAY
-            Console.Write("\n\n\n\t\t\t\t\t   <<<   Afterlife Patients [");
+            //IVA PATIENTS DISPLAY
+            Console.Write("\n\n\n\t\t\t\t\t      <<<   IVA Patients [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{Hospital.AfterLife.DeadPatients.Count}");
+            Console.Write($"{Hospital.Iva.PatientsCount()}");
             Console.ResetColor();
             Console.Write("]  >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            foreach (var patient in Hospital.AfterLife.DeadPatients)
+            foreach (Patient patient in Hospital.Iva)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write("\n\t\t\t          Name: ");
+                Console.ResetColor();
+                Console.Write($"{patient.Name}");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Write("\t     Sickness Level: ");
+                Console.ResetColor();
+                Console.Write($"{patient.SicknessLevel}");
+            }
+
+            if (Hospital.Iva.ExtraDoctor != null)
+            {
+                //CURRENT DOCTOR DISPLAY
+                Console.WriteLine($"\n\n\n\t\t\t\t\t      <<< Current Doctor At IVA >>>");
+                Console.WriteLine("\t\t\t______________________________________________________________________");
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write("\n\t                Name: ");
+                Console.ResetColor();
+
+                Console.Write($"{Hospital.Iva.ExtraDoctor.Name}");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Write("\t     Exhausted Level: ");
+                Console.ResetColor();
+                Console.Write($"{Hospital.Iva.ExtraDoctor.ExhaustedLevel}");
+
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.Write("\t     Competence Level: ");
+                Console.ResetColor();
+                Console.Write($"{Hospital.Iva.ExtraDoctor.Competence}");
+            }
+
+            //AFTERLIFE PATIENTS DISPLAY
+            Console.Write("\n\n\n\t\t\t\t\t   <<<   Afterlife Patients [");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write($"{Hospital.AfterLife.CountDeadPatients()}");
+            Console.ResetColor();
+            Console.Write("]  >>>\n");
+            Console.WriteLine("\t\t\t______________________________________________________________________");
+
+            foreach (Patient patient in Hospital.AfterLife)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write("\n\t           Name: ");
@@ -217,12 +212,12 @@ namespace Krankenhaus
             //HEALTHY CHECKED OUT PATIENTS DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t    <<<   Checked Out Patients [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{Hospital.CheckedOut.HealthyPatients.Count}");
+            Console.Write($"{Hospital.CheckedOut.CountHealthyPatients()}");
             Console.ResetColor();
             Console.Write("]  >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            foreach (var patient in Hospital.CheckedOut.HealthyPatients)
+            foreach (Patient patient in Hospital.CheckedOut)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write("\n\t          Name: ");
@@ -233,7 +228,7 @@ namespace Krankenhaus
                 Console.ResetColor();
                 Console.Write($"{patient.SicknessLevel}");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write("\t     Time of death: ");
+                Console.Write("\t     Time of Checkout: ");
                 Console.ResetColor();
                 Console.Write($"{patient.TimeOfCheckOut}");
             }

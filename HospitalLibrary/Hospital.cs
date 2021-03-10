@@ -38,14 +38,14 @@ namespace HospitalLibrary
             Sanatorium.OnTickChanges(this);
             PatientQueue.OnTickChanges();
             SendReportEventArgs eArgs = new SendReportEventArgs(currentTick);
-            SendReport?.Invoke(this.Copy(), eArgs);
+            SendReport?.Invoke(this.Clone(), eArgs);
         }
-        public Hospital Copy()
+        public Hospital Clone()
         {
             var hp = new Hospital();
-            hp.PatientQueue = (PatientQueue)this.PatientQueue.Copy();
-            hp.Iva = (IVA)this.Iva.Copy();
-            hp.Sanatorium = (Sanatorium)this.Sanatorium.Copy();
+            hp.PatientQueue = (PatientQueue)this.PatientQueue.Clone();
+            hp.Iva = (IVA)this.Iva.Clone();
+            hp.Sanatorium = (Sanatorium)this.Sanatorium.Clone();
             hp.AfterLife = this.AfterLife.Copy();
             hp.CheckedOut = this.CheckedOut.Copy();
 
@@ -57,7 +57,7 @@ namespace HospitalLibrary
 
             for (int i = 0; i < extraDoctors.Count; i++)
             {
-                hp.extraDoctors.Enqueue(tempArray[i].Copy());
+                hp.extraDoctors.Enqueue(tempArray[i].Clone());
             }
             return hp;
         }
@@ -65,9 +65,15 @@ namespace HospitalLibrary
         {
             return extraDoctors.Dequeue();
         }
-        internal int ExtraDoctorCount()
+        public int ExtraDoctorsCount()
         {
             return extraDoctors.Count;
+        }
+        public ExtraDoctor[] CopyExtraDoctorsToArray()
+        {
+            var tempDocArray = new ExtraDoctor[extraDoctors.Count];
+            extraDoctors.CopyTo(tempDocArray, 0);
+            return tempDocArray;
         }
     }
 }
