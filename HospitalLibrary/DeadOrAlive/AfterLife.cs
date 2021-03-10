@@ -11,5 +11,16 @@ namespace HospitalLibrary
         {
             DeadPatients = new List<Patient>();
         }
+        public AfterLife Clone()
+        {
+            var al = new AfterLife();
+            al.DeadPatients = new List<Patient>();
+            for (int i = 0; i < DeadPatients.Count; i++)
+            {
+                al.DeadPatients.Add(this.DeadPatients[i].Copy());
+            }
+
+            return al;
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using HospitalLibrary;
+using LoggerLibrary;
 
 namespace Krankenhaus
 {
@@ -12,16 +13,19 @@ namespace Krankenhaus
         public Timer Timer { get; set; }
         public Hospital Hospital { get; set; }
         public DateTime Start { get; set; }
-        public int TickCounter { get; set; }
+        public int DayCounter { get; set; }
         public DateTime End { get; set; }
         public bool isRunning { get; set; }
+        public Logger Logger { get; set; }
         public Simulation(int nrOfPatients)
         {
             this.Hospital = new Hospital(nrOfPatients);
-            TickCounter = 1;
+            this.Logger = new Logger();
+            Hospital.SendReport += Logger.WriteToFile;
+            DayCounter = 1;
             isRunning = true;
             Start = DateTime.Now;
-            this.Timer = new Timer(new TimerCallback(EveryTick), null, 4000, 5000);
+            this.Timer = new Timer(new TimerCallback(EveryTick), null, 1000, 500);
         }
         internal void Paus()
         {
@@ -43,7 +47,7 @@ namespace Krankenhaus
                 Hospital.OnTick();
                 ToScreen();
                 Console.WriteLine(Thread.CurrentThread.ManagedThreadId.ToString());
-                TickCounter++;
+                DayCounter++;
                 if (Hospital.Iva.PatientList.Count == 0 && Hospital.Sanatorium.PatientList.Count == 0)
                 {
                     Timer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -63,7 +67,7 @@ namespace Krankenhaus
 
             Console.Write("\n\t\t\t\t\t           Current Tick/Cycle: ");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write($"{TickCounter}");
+            Console.Write($"{DayCounter}");
             Console.ResetColor();
 
             //CURRENT PATIENTS IN QUEUE DISPLAY
@@ -93,25 +97,30 @@ namespace Krankenhaus
                 Console.Write($"{tempArray[i].Birthday}");
             }
 
-            //CURRENT DOCTOR DISPLAY
-            Console.WriteLine($"\n\n\n\t\t\t\t\t      <<< Current Doctor At IVA >>>");
-            Console.WriteLine("\t\t\t______________________________________________________________________");
 
 
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write("\n\t                Name: ");
-            Console.ResetColor();
-            Console.Write($"{Hospital.Iva.CurrentExtraDoctor.Name}");         
-            Console.ResetColor();
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write("\t     Exhausted Level: ");
-            Console.ResetColor();
-            Console.Write($"{Hospital.Iva.CurrentExtraDoctor.ExhaustedLevel}");
-           
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.Write("\t     Competence Level: ");
-            Console.ResetColor();
-            Console.Write($"{Hospital.Iva.CurrentExtraDoctor.Competence}");
+            if (Hospital.Iva.CurrentExtraDoctor != null)
+            {
+                //CURRENT DOCTOR DISPLAY
+                Console.WriteLine($"\n\n\n\t\t\t\t\t      <<< Current Doctor At IVA >>>");
+                Console.WriteLine("\t\t\t______________________________________________________________________");
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write("\n\t                Name: ");
+                Console.ResetColor();
+
+                Console.Write($"{Hospital.Iva.CurrentExtraDoctor.Name}");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Write("\t     Exhausted Level: ");
+                Console.ResetColor();
+                Console.Write($"{Hospital.Iva.CurrentExtraDoctor.ExhaustedLevel}");
+
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.Write("\t     Competence Level: ");
+                Console.ResetColor();
+                Console.Write($"{Hospital.Iva.CurrentExtraDoctor.Competence}");
+            }
 
             //EXTRA DOCTORS DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t      <<<   Extra Doctors [");

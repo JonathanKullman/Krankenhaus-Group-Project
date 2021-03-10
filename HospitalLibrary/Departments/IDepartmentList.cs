@@ -8,5 +8,6 @@ namespace HospitalLibrary
     {
         public List<Patient> PatientList { get; set; }
         public int MaxPatientList { get; set; }
+
     }
 }

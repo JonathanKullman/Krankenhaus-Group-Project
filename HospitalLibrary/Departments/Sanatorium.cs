@@ -18,9 +18,23 @@ namespace HospitalLibrary
             PatientList = new List<Patient>();
             OnTickChanges(hp);
         }
+        public Sanatorium()
+        {
+        }
         public void OnTickChanges(Hospital hp)
         {
             HospitalManager.CheckConditionThenTreatment(hp, this);
+        }
+        public IDepartment Clone()
+        {
+            var dep = new Sanatorium();
+            dep.PatientList = new List<Patient>();
+            for (int i = 0; i < PatientList.Count; i++)
+            {
+                dep.PatientList.Add(this.PatientList[i].Copy());
+            }
+
+            return dep;
         }
     }
 }

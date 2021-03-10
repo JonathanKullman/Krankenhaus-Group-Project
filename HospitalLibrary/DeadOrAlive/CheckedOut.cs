@@ -11,5 +11,16 @@ namespace HospitalLibrary
         {
             HealthyPatients = new List<Patient>();
         }
+        public CheckedOut Clone()
+        {
+            var hp = new CheckedOut();
+            hp.HealthyPatients = new List<Patient>();
+            for (int i = 0; i < HealthyPatients.Count; i++)
+            {
+                hp.HealthyPatients.Add(this.HealthyPatients[i].Copy());
+            }
+
+            return hp;
+        }
     }
 }

@@ -60,5 +60,16 @@ namespace HospitalLibrary
             }
             CheckPatientHealth();
         }
+        public Patient Copy()
+        {
+            var patient = new Patient();
+            patient.Name = this.Name;
+            patient.Birthday = this.Birthday;
+            patient.SicknessLevel = this.SicknessLevel;
+            patient.TimeOfCheckOut = this.TimeOfCheckOut;
+            patient.Condition = this.Condition;
+
+            return patient;
+        }
     }
 }

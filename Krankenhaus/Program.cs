@@ -20,6 +20,7 @@ namespace Krankenhaus
             while (true)
             {
                 Console.ReadKey();
+                simulationNr1.Paus();
                 Console.WriteLine("Du har tryckt ner en tangent.");
             }
             

@@ -55,6 +55,9 @@ namespace HospitalLibrary
             PatientList = new List<Patient>();
             OnTickChanges(hp);
         }
+        public IVA()
+        {
+        }
         
         public void OnTickChanges(Hospital hp)
         {
@@ -65,10 +68,10 @@ namespace HospitalLibrary
             {
                 if (PatientList.Count != 0)
                 {
-                    CurrentExtraDoctor.ExhaustedLevel++;
+                    CurrentExtraDoctor.ExhaustedLevel += 5;
                 }
                 
-                if (CurrentExtraDoctor.ExhaustedLevel == 20)
+                if (CurrentExtraDoctor.ExhaustedLevel >= 20)
                 {
                     if (hp.ExtraDoctors.Count > 0)
                     {
@@ -82,8 +85,19 @@ namespace HospitalLibrary
             }
 
 
+        }
+        public IDepartment Clone()
+        {
+            var dep = new IVA();
+            dep.PatientList = new List<Patient>();
+            dep.CurrentExtraDoctor = this.CurrentExtraDoctor.Copy();
 
+            for (int i = 0; i < PatientList.Count; i++)
+            {
+                dep.PatientList.Add(this.PatientList[i].Copy());
+            }
 
+            return dep;
         }
     }
 }

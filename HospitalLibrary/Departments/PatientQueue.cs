@@ -17,6 +17,10 @@ namespace HospitalLibrary
             PatientList = HospitalManager.GeneratePatientList(NumOfPatientsAtStart);
             OnTickChanges();
         }
+        public PatientQueue()
+        {
+
+        }
         public void OnTickChanges()
         {
             var tempArray = new Patient[PatientList.Count];
@@ -26,6 +30,21 @@ namespace HospitalLibrary
                 tempArray[i].CalculateNewHealth(this);
             }
 
+        }
+        public IDepartment Clone()
+        {
+            var dep = new PatientQueue();
+            
+            var tempArray = new Patient[this.PatientList.Count];
+
+            dep.PatientList = new Queue<Patient>();
+            dep.PatientList.CopyTo(tempArray, 0);
+
+            for (int i = 0; i < PatientList.Count; i++)
+            {
+                dep.PatientList.Enqueue(tempArray[i].Copy());
+            }
+            return dep;
         }
     }
 }
