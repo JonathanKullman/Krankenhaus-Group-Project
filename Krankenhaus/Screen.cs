@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using HospitalLibrary;
 
-namespace LoggerLibrary
+namespace Krankenhaus
 {
-    public class WriteToFile
+    public class Screen
     {
-        public void WriteToScreen()
+        static void PrintToSCreen()
         {
             
         }

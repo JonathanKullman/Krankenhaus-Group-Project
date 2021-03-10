@@ -20,10 +20,9 @@ namespace HospitalLibrary
         public void OnTickChanges()
         {
             var tempArray = new Patient[PatientList.Count];
-
-            for (int i = 0; i < PatientList.Count; i++)
+            PatientList.CopyTo(tempArray, 0);
+            for (int i = 0; i < tempArray.Length; i++)
             {
-                PatientList.CopyTo(tempArray,i);
                 tempArray[i].CalculateNewHealth(this);
             }
 

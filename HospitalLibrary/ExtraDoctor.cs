@@ -9,7 +9,6 @@ namespace HospitalLibrary
         public string Name { get; set; }
         public int ExhaustedLevel { get; set; }
         public int Competence { get; set; }
-        public bool BurnedOut { get; set; }
         public ExtraDoctor()
         {
             var rng = new Random();

@@ -3,11 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalLibrary", "HospitalLibrary\HospitalLibrary.csproj", "{EE9B64CD-45E4-4723-A52C-E146E91E2BFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalLibrary", "HospitalLibrary\HospitalLibrary.csproj", "{EE9B64CD-45E4-4723-A52C-E146E91E2BFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerLibrary", "LoggerLibrary\LoggerLibrary.csproj", "{420A6763-E851-4604-A85C-C5A9FCE168C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerLibrary", "LoggerLibrary\LoggerLibrary.csproj", "{420A6763-E851-4604-A85C-C5A9FCE168C1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EE9B64CD-45E4-4723-A52C-E146E91E2BFB} = {EE9B64CD-45E4-4723-A52C-E146E91E2BFB}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krankenhaus", "Krankenhaus\Krankenhaus.csproj", "{CCDC0DBE-10A9-429C-AC31-29B5FE57716A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krankenhaus", "Krankenhaus\Krankenhaus.csproj", "{CCDC0DBE-10A9-429C-AC31-29B5FE57716A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

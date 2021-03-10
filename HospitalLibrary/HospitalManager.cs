@@ -139,8 +139,12 @@ namespace HospitalLibrary
 
         internal static void CheckConditionThenTreatment(Hospital hp, IDepartmentList idl)
         {
-            while (idl.PatientList.Count == idl.MaxPatientList) //check patient condition, if "sick" add to list if there is room
+            while (idl.PatientList.Count != idl.MaxPatientList) //check patient condition, if "sick" add to list if there is room
             {
+                if (hp.PatientQueue.PatientList.Count == 0)
+                {
+                    break;
+                }
                 var patient = hp.PatientQueue.PatientList.Dequeue();
                 if (patient.Condition == Condition.Deceased)
                 {
@@ -154,6 +158,7 @@ namespace HospitalLibrary
                 {
                     idl.PatientList.Add(patient);
                 }
+
             }
 
             for (int i = 0; i < idl.PatientList.Count; i++) //If threatment cured or killed patient, added to new list and removed from old.

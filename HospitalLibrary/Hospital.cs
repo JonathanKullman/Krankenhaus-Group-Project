@@ -24,7 +24,7 @@ namespace HospitalLibrary
 
             PatientQueue = new PatientQueue(nrOfPatients);
             Iva = new IVA(this);
-            Sanatorium = new Sanatorium();
+            Sanatorium = new Sanatorium(this);
 
             
         }
@@ -34,6 +34,7 @@ namespace HospitalLibrary
             Sanatorium.OnTickChanges(this);
             PatientQueue.OnTickChanges();
         }
+
 
     }
 }

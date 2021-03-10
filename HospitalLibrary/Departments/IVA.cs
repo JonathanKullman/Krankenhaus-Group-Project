@@ -52,6 +52,7 @@ namespace HospitalLibrary
             this.Risk = 10;
             this.Chance = 70;
             this.CurrentExtraDoctor = hp.ExtraDoctors.Dequeue();
+            PatientList = new List<Patient>();
             OnTickChanges(hp);
         }
         
@@ -62,10 +63,13 @@ namespace HospitalLibrary
 
             if (CurrentExtraDoctor != null) //handles extraDoctors if they still exists
             {
-                CurrentExtraDoctor.ExhaustedLevel++;
+                if (PatientList.Count != 0)
+                {
+                    CurrentExtraDoctor.ExhaustedLevel++;
+                }
+                
                 if (CurrentExtraDoctor.ExhaustedLevel == 20)
                 {
-                    hp.PatientQueue.PatientList.Enqueue(new Patient()); //läkaren behöver rehabiliteras
                     if (hp.ExtraDoctors.Count > 0)
                     {
                         CurrentExtraDoctor = hp.ExtraDoctors.Dequeue(); //sätt igång nästa läkare
