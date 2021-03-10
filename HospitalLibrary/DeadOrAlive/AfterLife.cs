@@ -12,7 +12,7 @@ namespace HospitalLibrary
         {
             deadPatients = new List<Patient>();
         }
-        internal AfterLife Copy()
+        internal AfterLife Clone()
         {
             var al = new AfterLife();
             al.deadPatients = new List<Patient>();

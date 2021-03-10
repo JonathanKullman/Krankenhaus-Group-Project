@@ -12,7 +12,7 @@ namespace HospitalLibrary
         {
             healthyPatients = new List<Patient>();
         }
-        internal CheckedOut Copy()
+        internal CheckedOut Clone()
         {
             var checkedOutCopy = new CheckedOut();
             checkedOutCopy.healthyPatients = new List<Patient>();

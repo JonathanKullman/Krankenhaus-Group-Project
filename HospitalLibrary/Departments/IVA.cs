@@ -63,12 +63,11 @@ namespace HospitalLibrary
             this.risk = risk;
             this.chance = chance;
         }
-        
         public void OnTickChanges(Hospital hp)
         {
             HospitalManager.CheckConditionAndTreat(hp, this);
 
-            if (ExtraDoctor != null) //handles extraDoctors if they still exists
+            if (ExtraDoctor != null) // Handles extra doctors if they still exists.
             {
                 if (patients.Count != 0)
                 {
@@ -79,7 +78,7 @@ namespace HospitalLibrary
                 {
                     if (hp.ExtraDoctorsCount() > 0)
                     {
-                        ExtraDoctor = hp.DequeueExtraDoctor(); //sätt igång nästa läkare
+                        ExtraDoctor = hp.DequeueExtraDoctor();
                     }
                     else
                     {

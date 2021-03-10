@@ -28,7 +28,7 @@ namespace HospitalLibrary
             Iva = new IVA(this);
             Sanatorium = new Sanatorium(this);
         }
-        public Hospital()
+        private Hospital()
         {
 
         }
@@ -46,19 +46,10 @@ namespace HospitalLibrary
             hp.PatientQueue = (PatientQueue)this.PatientQueue.Clone();
             hp.Iva = (IVA)this.Iva.Clone();
             hp.Sanatorium = (Sanatorium)this.Sanatorium.Clone();
-            hp.AfterLife = this.AfterLife.Copy();
-            hp.CheckedOut = this.CheckedOut.Copy();
-
-            var tempArray = new ExtraDoctor[this.extraDoctors.Count];
-
+            hp.AfterLife = this.AfterLife.Clone();
+            hp.CheckedOut = this.CheckedOut.Clone();
             hp.extraDoctors = new Queue<ExtraDoctor>();
-
-            this.extraDoctors.CopyTo(tempArray, 0);
-
-            for (int i = 0; i < extraDoctors.Count; i++)
-            {
-                hp.extraDoctors.Enqueue(tempArray[i].Clone());
-            }
+            CopyExtraDoctorsToArray().ToList().ForEach(doctor => hp.extraDoctors.Enqueue(doctor.Clone()));
             return hp;
         }
         internal ExtraDoctor DequeueExtraDoctor()
