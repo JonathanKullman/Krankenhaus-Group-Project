@@ -148,13 +148,13 @@ namespace HospitalLibrary
                 var patient = hp.PatientQueue.Dequeue();
                 if (patient.Condition == Condition.Deceased)
                 {
-                    patient.DaysUnderTreatment = hp.CurrentDay;
+                    patient.DaysPassed = hp.CurrentDay;
                     patient.TimeOfCheckOut = DateTime.Now;
                     hp.AfterLife.AddDeadPatients(patient);
                 }
                 else if (patient.Condition == Condition.Healthy)
                 {
-                    patient.DaysUnderTreatment = hp.CurrentDay;
+                    patient.DaysPassed = hp.CurrentDay;
                     patient.TimeOfCheckOut = DateTime.Now;
                     hp.CheckedOut.AddHealthyPatients(patient);
                 }
@@ -178,12 +178,14 @@ namespace HospitalLibrary
                 patient.CalculateNewHealth(idl as IDepartment);
                 if (patient.Condition == Condition.Deceased)
                 {
+                    patient.DaysPassed = hp.CurrentDay;
                     patient.TimeOfCheckOut = DateTime.Now;
                     hp.AfterLife.AddDeadPatients(patient);
                     idl.RemovePatient(patient);
                 }
                 else if (patient.Condition == Condition.Healthy)
                 {
+                    patient.DaysPassed = hp.CurrentDay;
                     patient.TimeOfCheckOut = DateTime.Now;
                     hp.CheckedOut.AddHealthyPatients(patient);
                     idl.RemovePatient(patient);

@@ -115,7 +115,7 @@ namespace LoggerLibrary
                     sw.Write("\t     Time of death: ");
                     sw.Write($"{patient.TimeOfCheckOut}");
                     sw.Write("\t     Days under treatment: ");
-                    sw.Write($"{patient.DaysUnderTreatment}");
+                    sw.Write($"{patient.DaysPassed}");
                 }
 
 
@@ -136,7 +136,7 @@ namespace LoggerLibrary
                     sw.Write("\t     Time of checkout: ");
                     sw.Write($"{patient.TimeOfCheckOut}");
                     sw.Write("\t     Days under treatment: ");
-                    sw.Write($"{patient.DaysUnderTreatment}");
+                    sw.Write($"{patient.DaysPassed}");
                 }
                 sw.Flush();
             }

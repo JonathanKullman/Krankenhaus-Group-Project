@@ -47,7 +47,6 @@ namespace Krankenhaus
                 DayCounter++;
                 Hospital.OnTick(DayCounter);
                 Screen.PrintToSCreen(this);
-                Console.WriteLine(Thread.CurrentThread.ManagedThreadId.ToString());
 
                 if (Hospital.Iva.PatientsCount() == 0 && Hospital.Sanatorium.PatientsCount() == 0)
                 {

@@ -160,9 +160,9 @@ namespace Krankenhaus
                 Console.ResetColor();
                 Console.Write($"{patient.TimeOfCheckOut}");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write("\tDays treated: ");
+                Console.Write("\tDays passed: ");
                 Console.ResetColor();
-                Console.Write($"{patient.DaysUnderTreatment}");
+                Console.Write($"{patient.DaysPassed}");
 
             }
 
@@ -194,9 +194,9 @@ namespace Krankenhaus
                 Console.ResetColor();
                 Console.Write($"{patient.TimeOfCheckOut}");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write("\tDays treated: ");
+                Console.Write("\tDays passed: ");
                 Console.ResetColor();
-                Console.Write($"{patient.DaysUnderTreatment}");
+                Console.Write($"{patient.DaysPassed}");
             }
         }
         internal static void PrintFinishedResults(Simulation sim)
