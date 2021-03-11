@@ -141,5 +141,20 @@ namespace LoggerLibrary
                 sw.Flush();
             }
         }
+        public void SimFinished(DateTime start, DateTime end, int dayCounter, Hospital hp, int patientsAtStart)
+        {
+            using (StreamWriter sw = File.AppendText("SimCompletedReport.txt"))
+            {
+                sw.WriteLine();
+                sw.WriteLine($"The simulated started with {patientsAtStart} patients.");
+                sw.WriteLine($"Lasted for {dayCounter} days.");
+                sw.WriteLine($"Started at {start}.");
+                sw.WriteLine($"Ended at {end}.");
+                sw.WriteLine($"{hp.AfterLife.CountDeadPatients()} patients died.");
+                sw.WriteLine($"{hp.CheckedOut.CountHealthyPatients()} patients recovered.");
+                sw.WriteLine($"{hp.ExtraDoctorsCount()} extra doctors were still available.");
+
+            }
+        }
     }
 }

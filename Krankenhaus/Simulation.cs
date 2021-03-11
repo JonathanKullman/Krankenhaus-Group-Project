@@ -13,7 +13,7 @@ namespace Krankenhaus
         private Timer Timer { get; }
         internal Hospital Hospital { get; }
         internal DateTime Start { get; set; }
-        private int PatientsAtStart { get; }
+        internal int PatientsAtStart { get; }
         internal int DayCounter { get; private set; }
         internal DateTime End { get; set; }
         private bool isRunning { get; set; }
@@ -27,7 +27,7 @@ namespace Krankenhaus
             DayCounter = 1;
             isRunning = true;
             Start = DateTime.Now;
-            this.Timer = new Timer(new TimerCallback(EveryTick), null, 1000, 1000);
+            this.Timer = new Timer(new TimerCallback(EveryTick), null, 1000, 1000 + PatientsAtStart);
         }
         internal void Paus()
         {
@@ -48,16 +48,14 @@ namespace Krankenhaus
                 Hospital.OnTick(DayCounter);
                 Screen.PrintToSCreen(this);
                 Console.WriteLine(Thread.CurrentThread.ManagedThreadId.ToString());
-                
+
                 if (Hospital.Iva.PatientsCount() == 0 && Hospital.Sanatorium.PatientsCount() == 0)
                 {
                     Timer.Change(Timeout.Infinite, Timeout.Infinite);
                     Timer.Dispose();
                     End = DateTime.Now;
-                    Console.WriteLine($"Simulation started at {Start}");
-                    Console.WriteLine($"Simulation ended at {End}");
-                    Console.ReadKey();
-
+                    Screen.PrintFinishedResults(this);
+                    Logger.SimFinished(Start, End, DayCounter, Hospital.Clone(), PatientsAtStart);
                 }
             }
         }

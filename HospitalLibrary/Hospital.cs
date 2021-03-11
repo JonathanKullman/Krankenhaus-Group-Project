@@ -41,10 +41,16 @@ namespace HospitalLibrary
             Sanatorium.OnTickChanges(this);
             PatientQueue.OnTickChanges();
             OnSendReport(currentTick);
+
         }
         public void OnSendReport(int currentTick)
         {
-            SendReportEventArgs eArgs = new SendReportEventArgs(currentTick);
+            bool noMorePatients = false;
+            if (Iva.PatientsCount() == 0 && Sanatorium.PatientsCount() == 0)
+            {
+                noMorePatients = true;
+            }
+            SendReportEventArgs eArgs = new SendReportEventArgs(currentTick, noMorePatients);
             SendReport?.Invoke(this.Clone(), eArgs);
         }
         public Hospital Clone()

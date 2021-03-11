@@ -6,9 +6,11 @@ namespace HospitalLibrary
 {
     public class SendReportEventArgs
     {
-        public int CurrentTick { get; set; }
-        public SendReportEventArgs(int currentTick)
+        public int CurrentTick { get;}
+        public bool NoMorePatients { get; }
+        public SendReportEventArgs(int currentTick, bool noMorePatients)
         {
+            this.NoMorePatients = noMorePatients;
             this.CurrentTick = currentTick; 
         }
     }

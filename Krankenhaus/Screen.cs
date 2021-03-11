@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using HospitalLibrary;
 
 namespace Krankenhaus
@@ -197,6 +198,17 @@ namespace Krankenhaus
                 Console.ResetColor();
                 Console.Write($"{patient.DaysUnderTreatment}");
             }
+        }
+        internal static void PrintFinishedResults(Simulation sim)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"The simulated started with {sim.PatientsAtStart} patients.");
+            Console.WriteLine($"Lasted for {sim.DayCounter} days.");
+            Console.WriteLine($"Started at {sim.Start}.");
+            Console.WriteLine($"Ended at {sim.End}.");
+            Console.WriteLine($"{sim.Hospital.AfterLife.CountDeadPatients()} patients died.");
+            Console.WriteLine($"{sim.Hospital.CheckedOut.CountHealthyPatients()} patients recovered.");
+            Console.WriteLine($"{sim.Hospital.ExtraDoctorsCount()} extra doctors were still available.");
         }
     }
 }
