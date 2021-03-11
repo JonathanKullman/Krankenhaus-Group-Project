@@ -20,7 +20,6 @@ namespace Krankenhaus
             int sanatorium = ReadInt();
             var simulationNr1 = new Simulation(nrOfPatients, iva, sanatorium);
 
-            simulationNr1.Hospital.OnSendReport(simulationNr1.DayCounter);
             Screen.PrintToSCreen(simulationNr1);
 
 

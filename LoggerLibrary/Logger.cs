@@ -6,9 +6,8 @@ namespace LoggerLibrary
 {
     public class Logger
     {
-        public void WriteToFile(object s, SendReportEventArgs e)
+        public void WriteToFile(Hospital hp)
         {
-            var hp = s as Hospital;
 
             using (StreamWriter sw = File.AppendText("Logger.txt"))
             {
@@ -16,7 +15,7 @@ namespace LoggerLibrary
                 sw.WriteLine();
                 sw.WriteLine();
                 sw.Write("\n\t\t\t\t\t           Current Tick/Cycle: ");
-                sw.Write($"Day #{e.CurrentTick}");
+                sw.Write($"Day #{hp.CurrentDay}");
 
                 //CURRENT PATIENTS IN QUEUE DISPLAY
                 sw.Write("\n\n\n\t\t\t\t\t       <<< Patients in Queue [");

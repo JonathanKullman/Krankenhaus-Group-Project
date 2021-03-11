@@ -14,8 +14,7 @@ namespace HospitalLibrary
         public Sanatorium Sanatorium { get; private set; }
         public IVA Iva { get; private set; }
         public PatientQueue PatientQueue { get; private set; }
-        internal int CurrentDay { get; private set; }
-        public event EventHandler<SendReportEventArgs> SendReport;
+        public int CurrentDay { get; private set; }
 
         public Hospital(int nrOfPatients, int iva, int sanatorium)
         {
@@ -37,8 +36,6 @@ namespace HospitalLibrary
         {
             CurrentDay = currentTick;
 
-            OnSendReport(currentTick);
-
             foreach (Patient item in Iva)
             {
                 item.DaysTreated++;
@@ -48,11 +45,7 @@ namespace HospitalLibrary
                 item.DaysTreated++;
             }
         }
-        public void OnSendReport(int currentTick)
-        {
-            SendReportEventArgs eArgs = new SendReportEventArgs(currentTick);
-            SendReport?.Invoke(this.Clone(), eArgs);
-        }
+
         public Hospital Clone()
         {
             var hp = new Hospital();

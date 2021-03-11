@@ -141,39 +141,49 @@ namespace HospitalLibrary
         {
             while (idl.PatientsCount() != idl.MaxPatients) // Adds patients to specified department if they are not healthy or deceased.
             {
-                if (hp.PatientQueue.PatientsCount() == 0)
-                {
-                    break;
-                }
 
-                var patient = hp.PatientQueue.Dequeue();
-                if (patient.Condition == Condition.Deceased)
+                if (hp.PatientQueue.PatientsCount() != 0)
                 {
-                    patient.DaysPassed = hp.CurrentDay;
-                    patient.TimeOfCheckOut = DateTime.Now;
-                    hp.AfterLife.AddDeadPatients(patient);
+                    var patient = hp.PatientQueue.Dequeue();
+
+                    if (patient.Condition == Condition.Deceased)
+                    {
+                        patient.DaysPassed = hp.CurrentDay;
+                        patient.TimeOfCheckOut = DateTime.Now;
+                        hp.AfterLife.AddDeadPatients(patient);
+                    }
+                    else if (patient.Condition == Condition.Healthy)
+                    {
+                        patient.DaysPassed = hp.CurrentDay;
+                        patient.TimeOfCheckOut = DateTime.Now;
+                        hp.CheckedOut.AddHealthyPatients(patient);
+                    }
+                    else
+                    {
+                        if (idl is IVA)
+                        {
+                            patient.DaysTreated = 1;
+                            patient.Department = Department.IVA;
+                        }
+                        else if (idl is Sanatorium)
+                        {
+                            patient.DaysTreated = 1;
+                            patient.Department = Department.Sanatorium;
+                        }
+                        idl.AddPatient(patient);
+                    }
                 }
-                else if (patient.Condition == Condition.Healthy)
+                else if (idl is IVA && hp.Iva.PatientsCount() < hp.Iva.MaxPatients && hp.Sanatorium.PatientsCount() > 0)
                 {
-                    patient.DaysPassed = hp.CurrentDay;
-                    patient.TimeOfCheckOut = DateTime.Now;
-                    hp.CheckedOut.AddHealthyPatients(patient);
+                    var patient = hp.Sanatorium.MoveToIVA();
+                    patient.DaysTreated = 1;
+                    patient.Department = Department.IVA;
+                    hp.Iva.AddPatient(patient);
                 }
                 else
                 {
-                    if (idl is IVA)
-                    {
-                        patient.DaysTreated = 1;
-                        patient.Department = Department.IVA;
-                    }
-                    else if (idl is Sanatorium)
-                    {
-                        patient.DaysTreated = 1;
-                        patient.Department = Department.Sanatorium;
-                    }
-                    idl.AddPatient(patient);
+                    break;
                 }
-
             }
             for (int i = 0; i < idl.PatientsCount(); i++)
             {
@@ -195,5 +205,11 @@ namespace HospitalLibrary
                 }
             }
         }
+        internal static void Namn()
+        {
+
+        }
     }
+
+
 }
