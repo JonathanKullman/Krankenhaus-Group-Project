@@ -162,10 +162,12 @@ namespace HospitalLibrary
                 {
                     if (idl is IVA)
                     {
+                        patient.DaysTreated = 1;
                         patient.Department = Department.IVA;
                     }
                     else if (idl is Sanatorium)
                     {
+                        patient.DaysTreated = 1;
                         patient.Department = Department.Sanatorium;
                     }
                     idl.AddPatient(patient);

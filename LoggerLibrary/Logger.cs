@@ -114,8 +114,16 @@ namespace LoggerLibrary
                     sw.Write($"{patient.Department}");
                     sw.Write("\t     Time of death: ");
                     sw.Write($"{patient.TimeOfCheckOut}");
-                    sw.Write("\t     Days under treatment: ");
-                    sw.Write($"{patient.DaysPassed}");
+                    if (patient.Department != Department.PatientQueue)
+                    {
+                        sw.Write("\tDays treated: ");
+                        sw.Write($"{patient.DaysTreated}");
+                    }
+                    else
+                    {
+                        sw.Write("\tDays passed: ");
+                        sw.Write($"{patient.DaysPassed}");
+                    }
                 }
 
 
@@ -135,8 +143,16 @@ namespace LoggerLibrary
                     sw.Write($"{patient.Department}");
                     sw.Write("\t     Time of checkout: ");
                     sw.Write($"{patient.TimeOfCheckOut}");
-                    sw.Write("\t     Days under treatment: ");
-                    sw.Write($"{patient.DaysPassed}");
+                    if (patient.Department != Department.PatientQueue)
+                    {
+                        sw.Write("\tDays treated: ");
+                        sw.Write($"{patient.DaysTreated}");
+                    }
+                    else
+                    {
+                        sw.Write("\tDays passed: ");
+                        sw.Write($"{patient.DaysPassed}");
+                    }
                 }
                 sw.Flush();
             }
@@ -145,14 +161,14 @@ namespace LoggerLibrary
         {
             using (StreamWriter sw = File.AppendText("SimCompletedReport.txt"))
             {
-                sw.WriteLine();
-                sw.WriteLine($"The simulated started with {patientsAtStart} patients.");
-                sw.WriteLine($"Lasted for {dayCounter} days.");
-                sw.WriteLine($"Started at {start}.");
-                sw.WriteLine($"Ended at {end}.");
+                sw.WriteLine($"The simulation started with {patientsAtStart} patients.");
+                sw.WriteLine($"Simulation lasted for {dayCounter} days.");
+                sw.WriteLine($"Simulation started at {start}.");
+                sw.WriteLine($"Simulation Ended at {end}.");
                 sw.WriteLine($"{hp.AfterLife.CountDeadPatients()} patients died.");
                 sw.WriteLine($"{hp.CheckedOut.CountHealthyPatients()} patients recovered.");
                 sw.WriteLine($"{hp.ExtraDoctorsCount()} extra doctors were still available.");
+                sw.WriteLine();
 
             }
         }

@@ -16,7 +16,7 @@ namespace HospitalLibrary
             Risk = 80;
             Chance = 5;
             patients = HospitalManager.GeneratePatientList(nrOfPatients);
-            OnTickChanges();
+            OnTickChanges(null);
         }
         private PatientQueue(Queue<Patient> patients, int risk, int chance)
         {
@@ -24,7 +24,7 @@ namespace HospitalLibrary
             this.Risk = risk;
             this.Chance = chance;
         }
-        public void OnTickChanges()
+        public void OnTickChanges(object state)
         {
             CopyPatientsToArray().ToList().ForEach(patient => patient.CalculateNewHealth(this));
         }

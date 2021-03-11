@@ -11,6 +11,7 @@ namespace Krankenhaus
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Welcome to Hospital Simulator 3000");
             Console.WriteLine($"How many patients?");
             int nrOfPatients = ReadInt();
             var simulationNr1 = new Simulation(nrOfPatients);
@@ -18,12 +19,20 @@ namespace Krankenhaus
             simulationNr1.Hospital.OnSendReport(simulationNr1.DayCounter);
             Screen.PrintToSCreen(simulationNr1);
 
-            simulationNr1.EveryTick(null);
-            while (true)
+
+            ConsoleKey input = ConsoleKey.Enter;
+            while (input != ConsoleKey.Escape)
             {
-                Console.ReadKey();
+                input = Console.ReadKey().Key;
                 simulationNr1.Paus();
-                Console.WriteLine("\nYou have paused the simulator.");
+                if (input != ConsoleKey.Escape)
+                {
+                    Console.WriteLine("\nYou have paused/resumed the simulator. ESC to Exit.");
+                }
+                else if (input == ConsoleKey.Escape)
+                {
+                    Environment.Exit(0);
+                }
             }
         }
     /// <summary>

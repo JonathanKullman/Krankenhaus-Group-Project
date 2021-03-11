@@ -37,20 +37,21 @@ namespace HospitalLibrary
         public void OnTick(int currentTick)
         {
             CurrentDay = currentTick;
-            Iva.OnTickChanges(this);
-            Sanatorium.OnTickChanges(this);
-            PatientQueue.OnTickChanges();
+
             OnSendReport(currentTick);
 
+            foreach (Patient item in Iva)
+            {
+                item.DaysTreated++;
+            }            
+            foreach (Patient item in Sanatorium)
+            {
+                item.DaysTreated++;
+            }
         }
         public void OnSendReport(int currentTick)
         {
-            bool noMorePatients = false;
-            if (Iva.PatientsCount() == 0 && Sanatorium.PatientsCount() == 0)
-            {
-                noMorePatients = true;
-            }
-            SendReportEventArgs eArgs = new SendReportEventArgs(currentTick, noMorePatients);
+            SendReportEventArgs eArgs = new SendReportEventArgs(currentTick);
             SendReport?.Invoke(this.Clone(), eArgs);
         }
         public Hospital Clone()
@@ -62,6 +63,7 @@ namespace HospitalLibrary
             hp.AfterLife = this.AfterLife.Clone();
             hp.CheckedOut = this.CheckedOut.Clone();
             hp.extraDoctors = new Queue<ExtraDoctor>();
+            hp.CurrentDay = this.CurrentDay;
             CopyExtraDoctorsToArray().ToList().ForEach(doctor => hp.extraDoctors.Enqueue(doctor.Clone()));
             return hp;
         }

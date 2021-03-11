@@ -24,8 +24,9 @@ namespace HospitalLibrary
         {
             this.patients = patients;
         }
-        public void OnTickChanges(Hospital hp)
+        public void OnTickChanges(object state)
         {
+            var hp = state as Hospital;
             HospitalManager.CheckConditionAndTreat(hp, this);
         }
         public void AddPatient(Patient patient)

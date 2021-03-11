@@ -160,9 +160,19 @@ namespace Krankenhaus
                 Console.ResetColor();
                 Console.Write($"{patient.TimeOfCheckOut}");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write("\tDays passed: ");
-                Console.ResetColor();
-                Console.Write($"{patient.DaysPassed}");
+                if (patient.Department != Department.PatientQueue)
+                {
+                    Console.Write("\tDays treated: ");
+                    Console.ResetColor();
+                    Console.Write($"{patient.DaysTreated}");
+                }
+                else
+                {
+                    Console.Write("\tDays passed: ");
+                    Console.ResetColor();
+                    Console.Write($"{patient.DaysPassed}");
+                }
+
 
             }
 
@@ -178,7 +188,7 @@ namespace Krankenhaus
             foreach (Patient patient in sim.Hospital.CheckedOut)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.Write("\n\tName: ");
+                Console.Write("\n\tName: ", -50);
                 Console.ResetColor();
                 Console.Write($"{patient.Name}");
                 //Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -194,9 +204,18 @@ namespace Krankenhaus
                 Console.ResetColor();
                 Console.Write($"{patient.TimeOfCheckOut}");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write("\tDays passed: ");
-                Console.ResetColor();
-                Console.Write($"{patient.DaysPassed}");
+                if (patient.Department != Department.PatientQueue)
+                {
+                    Console.Write("\tDays treated: ");
+                    Console.ResetColor();
+                    Console.Write($"{patient.DaysTreated}");
+                }
+                else
+                {
+                    Console.Write("\tDays passed: ");
+                    Console.ResetColor();
+                    Console.Write($"{patient.DaysPassed}");
+                }
             }
         }
         internal static void PrintFinishedResults(Simulation sim)

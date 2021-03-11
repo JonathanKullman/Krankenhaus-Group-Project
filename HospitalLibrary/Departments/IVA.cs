@@ -63,8 +63,9 @@ namespace HospitalLibrary
             this.risk = risk;
             this.chance = chance;
         }
-        public void OnTickChanges(Hospital hp)
+        public void OnTickChanges(object state)
         {
+            var hp = state as Hospital;
             HospitalManager.CheckConditionAndTreat(hp, this);
 
             if (ExtraDoctor != null) // Handles extra doctors if they still exists.

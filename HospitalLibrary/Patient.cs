@@ -12,6 +12,7 @@ namespace HospitalLibrary
         public DateTime Birthday { get; }
         public int SicknessLevel { get; private set; }
         public int DaysPassed { get; set; }
+        public int DaysTreated { get; set; }
         public Department Department { get; set; }
         public Condition Condition 
         { 
@@ -35,13 +36,16 @@ namespace HospitalLibrary
             Birthday = DateTime.Now.AddDays(-rng.Next(1 * 365, 90 * 365)).Date;
             SicknessLevel = rng.Next(0, 10);
         }
-        private Patient(string name, DateTime birthdate, int sicknessLevel, DateTime? timeOfCheckout, int daysUnderTreatment)
+        private Patient(string name, DateTime birthdate, int sicknessLevel, 
+            DateTime? timeOfCheckout, int daysPassed, int daysTreated, Department dep)
         {
             Name = name;
             Birthday = birthdate;
             SicknessLevel = sicknessLevel;
             TimeOfCheckOut = timeOfCheckout;
-            DaysPassed = daysUnderTreatment;
+            DaysPassed = daysPassed;
+            DaysTreated = daysTreated;
+            Department = dep;
         }
         internal void CalculateNewHealth(IDepartment department)
         {
@@ -64,7 +68,8 @@ namespace HospitalLibrary
         }
         public Patient Clone()
         {
-            var patient = new Patient(this.Name, this.Birthday, this.SicknessLevel, this.TimeOfCheckOut, this.DaysPassed);
+            var patient = new Patient(this.Name, this.Birthday, this.SicknessLevel,
+                this.TimeOfCheckOut, this.DaysPassed, this.DaysTreated, this.Department);
             return patient;
         }
     }
