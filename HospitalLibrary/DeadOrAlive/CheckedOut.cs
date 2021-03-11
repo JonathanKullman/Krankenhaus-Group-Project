@@ -1,26 +1,39 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HospitalLibrary
 {
-    public class CheckedOut
+    public class CheckedOut : IEnumerable
     {
-        public List<Patient> HealthyPatients { get; set; }
-        public CheckedOut()
+        private List<Patient> healthyPatients;
+        internal CheckedOut()
         {
-            HealthyPatients = new List<Patient>();
+            healthyPatients = new List<Patient>();
         }
-        public CheckedOut Clone()
+        internal CheckedOut Clone()
         {
-            var hp = new CheckedOut();
-            hp.HealthyPatients = new List<Patient>();
-            for (int i = 0; i < HealthyPatients.Count; i++)
+            var checkedOutCopy = new CheckedOut();
+            checkedOutCopy.healthyPatients = new List<Patient>();
+            for (int i = 0; i < healthyPatients.Count; i++)
             {
-                hp.HealthyPatients.Add(this.HealthyPatients[i].Copy());
+                checkedOutCopy.healthyPatients.Add(this.healthyPatients[i].Clone());
             }
+            return checkedOutCopy;
+        }
+        internal void AddHealthyPatients(Patient patient)
+        {
+            healthyPatients.Add(patient);
+        }
+        public int CountHealthyPatients()
+        {
+            return healthyPatients.Count;
+        }
 
-            return hp;
+        public IEnumerator GetEnumerator()
+        {
+            return healthyPatients.GetEnumerator();
         }
     }
 }

@@ -15,21 +15,16 @@ namespace Krankenhaus
             int nrOfPatients = ReadInt();
             var simulationNr1 = new Simulation(nrOfPatients);
 
+            simulationNr1.Hospital.OnSendReport(simulationNr1.DayCounter);
+            Screen.PrintToSCreen(simulationNr1);
 
             simulationNr1.EveryTick(null);
             while (true)
             {
                 Console.ReadKey();
                 simulationNr1.Paus();
-                Console.WriteLine("Du har tryckt ner en tangent.");
+                Console.WriteLine("\nYou have paused the simulator.");
             }
-            
-
-
-
-
-
-
         }
     /// <summary>
     /// Runs a TryParse-loop for integers. Prompts user to retry while it's not a number.

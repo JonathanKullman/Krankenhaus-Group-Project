@@ -16,15 +16,15 @@ namespace HospitalLibrary
             ExhaustedLevel = 0;
             Competence = rng.Next(-10, 31);
         }
-
-        public ExtraDoctor Copy()
+        private ExtraDoctor(string name, int exhaustedLevel, int competence)
         {
-            var extraDoctor = new ExtraDoctor();
-            extraDoctor.Name = this.Name;
-            extraDoctor.ExhaustedLevel = this.ExhaustedLevel;
-            extraDoctor.Competence = this.Competence;
-
-
+            Name = name;
+            ExhaustedLevel = exhaustedLevel;
+            Competence = competence;
+        }
+        public ExtraDoctor Clone()
+        {
+            var extraDoctor = new ExtraDoctor(this.Name, this.ExhaustedLevel, this.Competence);
             return extraDoctor;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,93 +12,106 @@ namespace HospitalLibrary
         {
             get 
             {
-                if (CurrentExtraDoctor == null)
+                if (ExtraDoctor == null)
                 {
                     return risk;
                 }
-                else if (CurrentExtraDoctor.Competence >= risk)
+                else if (ExtraDoctor.Competence >= risk)
                 {
                     return 0;
                 }
                 else 
                 {
-                    return risk -= CurrentExtraDoctor.Competence;
+                    return risk -= ExtraDoctor.Competence;
                 }
             }
-            set { risk = value; }
         }
         private int chance;
         public int Chance
         {
             get 
             {
-                if (CurrentExtraDoctor == null)
+                if (ExtraDoctor == null)
                 {
                     return chance;
                 }
                 else
                 {
-                    return chance += CurrentExtraDoctor.Competence;
+                    return chance += ExtraDoctor.Competence;
                 }  
             }
-
-            set { chance = value; }
         }
-        public ExtraDoctor CurrentExtraDoctor { get; set; }
-        public List<Patient> PatientList { get; set; }
-        public int MaxPatientList { get; set; }
+
+        private List<Patient> patients;
+        public int MaxPatients { get; }
+        public ExtraDoctor ExtraDoctor { get; private set; }
+
         public IVA(Hospital hp)
         {
-            MaxPatientList = 5;
-            this.Risk = 10;
-            this.Chance = 70;
-            this.CurrentExtraDoctor = hp.ExtraDoctors.Dequeue();
-            PatientList = new List<Patient>();
+            this.ExtraDoctor = hp.DequeueExtraDoctor();
+            this.patients = new List<Patient>();
+            this.MaxPatients = 5;
+            this.risk = 10;
+            this.chance = 70;
             OnTickChanges(hp);
         }
-        public IVA()
+        private IVA(ExtraDoctor extraDoctor, List<Patient> patients, int maxPatients, int risk, int chance)
         {
+            this.ExtraDoctor = extraDoctor;
+            this.patients = patients;
+            this.MaxPatients = maxPatients;
+            this.risk = risk;
+            this.chance = chance;
         }
-        
         public void OnTickChanges(Hospital hp)
         {
+            HospitalManager.CheckConditionAndTreat(hp, this);
 
-            HospitalManager.CheckConditionThenTreatment(hp, this);
-
-            if (CurrentExtraDoctor != null) //handles extraDoctors if they still exists
+            if (ExtraDoctor != null) // Handles extra doctors if they still exists.
             {
-                if (PatientList.Count != 0)
+                if (patients.Count != 0)
                 {
-                    CurrentExtraDoctor.ExhaustedLevel += 5;
+                    ExtraDoctor.ExhaustedLevel += 5;
                 }
                 
-                if (CurrentExtraDoctor.ExhaustedLevel >= 20)
+                if (ExtraDoctor.ExhaustedLevel >= 20)
                 {
-                    if (hp.ExtraDoctors.Count > 0)
+                    if (hp.ExtraDoctorsCount() > 0)
                     {
-                        CurrentExtraDoctor = hp.ExtraDoctors.Dequeue(); //sätt igång nästa läkare
+                        ExtraDoctor = hp.DequeueExtraDoctor();
                     }
                     else
                     {
-                        CurrentExtraDoctor = null;
+                        ExtraDoctor = null;
                     }
                 }
             }
-
-
         }
         public IDepartment Clone()
         {
-            var dep = new IVA();
-            dep.PatientList = new List<Patient>();
-            dep.CurrentExtraDoctor = this.CurrentExtraDoctor.Copy();
-
-            for (int i = 0; i < PatientList.Count; i++)
-            {
-                dep.PatientList.Add(this.PatientList[i].Copy());
-            }
-
-            return dep;
+            var patientsCopy = new List<Patient>();
+            patients.ForEach(patient => patientsCopy.Add(patient.Clone()));
+            return new IVA(this.ExtraDoctor, patientsCopy, this.MaxPatients, this.Risk, this.Chance);
+        }
+        public void AddPatient(Patient patient)
+        {
+            patients.Add(patient);
+        }
+        public void RemovePatient(Patient patient)
+        {
+            patients.Remove(patient);
+        }
+        public int PatientsCount()
+        {
+            return patients.Count;
+        }
+        public Patient this[int i]
+        {
+            get { return patients[i]; }
+        }
+        public IEnumerator GetEnumerator()
+        {
+            return patients.GetEnumerator();
         }
     }
 }

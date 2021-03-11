@@ -1,50 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HospitalLibrary
 {
     public class PatientQueue : IDepartment
     {
-        public int Risk { get; set; }
-        public int Chance { get; set; }
-        public Queue<Patient> PatientList { get; set; }
-        public int NumOfPatientsAtStart { get; set; }
+        public int Risk { get; }
+        public int Chance { get; }
+
+        private Queue<Patient> patients;
+
         public PatientQueue(int nrOfPatients)
         {
-            NumOfPatientsAtStart = nrOfPatients;
             Risk = 80;
             Chance = 5;
-            PatientList = HospitalManager.GeneratePatientList(NumOfPatientsAtStart);
+            patients = HospitalManager.GeneratePatientList(nrOfPatients);
             OnTickChanges();
         }
-        public PatientQueue()
+        private PatientQueue(Queue<Patient> patients, int risk, int chance)
         {
-
+            this.patients = patients;
+            this.Risk = risk;
+            this.Chance = chance;
         }
         public void OnTickChanges()
         {
-            var tempArray = new Patient[PatientList.Count];
-            PatientList.CopyTo(tempArray, 0);
-            for (int i = 0; i < tempArray.Length; i++)
-            {
-                tempArray[i].CalculateNewHealth(this);
-            }
-
+            CopyPatientsToArray().ToList().ForEach(patient => patient.CalculateNewHealth(this));
+        }
+        internal Patient Dequeue()
+        {
+            return patients.Dequeue();
+        }
+        public int PatientsCount()
+        {
+            return patients.Count;
+        }
+        public Patient[] CopyPatientsToArray()
+        {
+            var tempPatientArray = new Patient[patients.Count];
+            patients.CopyTo(tempPatientArray, 0);
+            return tempPatientArray;
         }
         public IDepartment Clone()
         {
-            var dep = new PatientQueue();
-            
-            var tempArray = new Patient[this.PatientList.Count];
+            var tempPatientArray = CopyPatientsToArray();
+            var patientsCopy = new Queue<Patient>();
+            tempPatientArray.ToList().ForEach(patient => patientsCopy.Enqueue(patient.Clone()));
 
-            dep.PatientList = new Queue<Patient>();
-            dep.PatientList.CopyTo(tempArray, 0);
-
-            for (int i = 0; i < PatientList.Count; i++)
-            {
-                dep.PatientList.Enqueue(tempArray[i].Copy());
-            }
-            return dep;
+            return new PatientQueue(patientsCopy, this.Risk, this.Chance);
         }
+        
     }
 }

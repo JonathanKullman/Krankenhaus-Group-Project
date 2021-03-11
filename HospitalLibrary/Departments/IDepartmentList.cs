@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Collections;
 
 namespace HospitalLibrary
 {
-    interface IDepartmentList
+    interface IDepartmentList : IEnumerable
     {
-        public List<Patient> PatientList { get; set; }
-        public int MaxPatientList { get; set; }
-
+        int MaxPatients { get; }
+        public Patient this[int i] { get; }
+        public int PatientsCount();
+        public void AddPatient(Patient patient);
+        public void RemovePatient(Patient patient);
     }
 }

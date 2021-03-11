@@ -6,8 +6,8 @@ namespace HospitalLibrary
 {
     public interface IDepartment
     {
-        public int Risk { get; set; }
-        public int Chance { get; set; }
+        int Risk { get; }
+        int Chance { get; }
 
         public virtual void OnTickChanges(Hospital hp) { }
         public IDepartment Clone();

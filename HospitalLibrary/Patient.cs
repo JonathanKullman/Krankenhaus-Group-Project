@@ -5,40 +5,42 @@ using System.Text;
 namespace HospitalLibrary
 {
     public enum Condition { Healthy = 0, Sick, Deceased = 10 }
+    public enum Department { IVA, Sanatorium, PatientQueue }
     public class Patient
     {
-        public string Name { get; set; }
-        public DateTime Birthday { get; set; }
-        public int SicknessLevel { get; set; }
-        public Condition Condition { get; set; }
-        public DateTime? TimeOfCheckOut { get; set; }
+        public string Name { get; }
+        public DateTime Birthday { get; }
+        public int SicknessLevel { get; private set; }
+        public int DaysUnderTreatment { get; set; }
+        public Department Department { get; set; }
+        public Condition Condition 
+        { 
+            get
+            {
+                if (SicknessLevel == 10)
+                    return Condition.Deceased;
+                else if (SicknessLevel == 0)
+                    return Condition.Healthy;
+                else
+                    return Condition.Sick;
+            }
+        }
+        public DateTime? TimeOfCheckOut { get; internal set; }
 
         public Patient()
         {
             var rng = new Random();
+            Department = Department.PatientQueue;
             Name = HospitalManager.GenerateName();
             Birthday = DateTime.Now.AddDays(-rng.Next(1 * 365, 90 * 365)).Date;
             SicknessLevel = rng.Next(0, 10);
-            CheckPatientHealth();
         }
-
-        internal void CheckPatientHealth()
+        private Patient(string name, DateTime birthdate, int sicknessLevel, DateTime? timeOfCheckout)
         {
-            if (SicknessLevel == 0)
-            {
-                Condition = Condition.Healthy;
-                TimeOfCheckOut = DateTime.Now;
-            }
-            else if (SicknessLevel == 10)
-            {
-                Condition = Condition.Deceased;
-                TimeOfCheckOut = DateTime.Now;
-            }
-            else
-            {
-                Condition = Condition.Sick;
-                TimeOfCheckOut = null;
-            }
+            Name = name;
+            Birthday = birthdate;
+            SicknessLevel = sicknessLevel;
+            TimeOfCheckOut = timeOfCheckout;
         }
         internal void CalculateNewHealth(IDepartment department)
         {
@@ -58,17 +60,10 @@ namespace HospitalLibrary
             {
                 SicknessLevel--;
             }
-            CheckPatientHealth();
         }
-        public Patient Copy()
+        public Patient Clone()
         {
-            var patient = new Patient();
-            patient.Name = this.Name;
-            patient.Birthday = this.Birthday;
-            patient.SicknessLevel = this.SicknessLevel;
-            patient.TimeOfCheckOut = this.TimeOfCheckOut;
-            patient.Condition = this.Condition;
-
+            var patient = new Patient(this.Name, this.Birthday, this.SicknessLevel, this.TimeOfCheckOut);
             return patient;
         }
     }
