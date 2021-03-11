@@ -14,19 +14,21 @@ namespace HospitalLibrary
         public Sanatorium Sanatorium { get; private set; }
         public IVA Iva { get; private set; }
         public PatientQueue PatientQueue { get; private set; }
-        
+        internal int CurrentDay { get; private set; }
+
         public event EventHandler<SendReportEventArgs> SendReport;
 
         public Hospital(int nrOfPatients)
         {
             extraDoctors = HospitalManager.GenerateExtraDoctors();
-
+            CurrentDay = 1;
             AfterLife = new AfterLife();
             CheckedOut = new CheckedOut();
 
             PatientQueue = new PatientQueue(nrOfPatients);
             Iva = new IVA(this);
             Sanatorium = new Sanatorium(this);
+            
         }
         private Hospital()
         {
@@ -34,9 +36,14 @@ namespace HospitalLibrary
         }
         public void OnTick(int currentTick)
         {
+            CurrentDay = currentTick;
             Iva.OnTickChanges(this);
             Sanatorium.OnTickChanges(this);
             PatientQueue.OnTickChanges();
+            OnSendReport(currentTick);
+        }
+        public void OnSendReport(int currentTick)
+        {
             SendReportEventArgs eArgs = new SendReportEventArgs(currentTick);
             SendReport?.Invoke(this.Clone(), eArgs);
         }

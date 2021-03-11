@@ -15,6 +15,8 @@ namespace Krankenhaus
             int nrOfPatients = ReadInt();
             var simulationNr1 = new Simulation(nrOfPatients);
 
+            simulationNr1.Hospital.OnSendReport(simulationNr1.DayCounter);
+            Screen.PrintToSCreen(simulationNr1);
 
             simulationNr1.EveryTick(null);
             while (true)

@@ -148,16 +148,26 @@ namespace HospitalLibrary
                 var patient = hp.PatientQueue.Dequeue();
                 if (patient.Condition == Condition.Deceased)
                 {
+                    patient.DaysUnderTreatment = hp.CurrentDay;
                     patient.TimeOfCheckOut = DateTime.Now;
                     hp.AfterLife.AddDeadPatients(patient);
                 }
                 else if (patient.Condition == Condition.Healthy)
                 {
+                    patient.DaysUnderTreatment = hp.CurrentDay;
                     patient.TimeOfCheckOut = DateTime.Now;
                     hp.CheckedOut.AddHealthyPatients(patient);
                 }
                 else
                 {
+                    if (idl is IVA)
+                    {
+                        patient.Department = Department.IVA;
+                    }
+                    else if (idl is Sanatorium)
+                    {
+                        patient.Department = Department.Sanatorium;
+                    }
                     idl.AddPatient(patient);
                 }
 

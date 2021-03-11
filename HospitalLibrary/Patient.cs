@@ -5,11 +5,14 @@ using System.Text;
 namespace HospitalLibrary
 {
     public enum Condition { Healthy = 0, Sick, Deceased = 10 }
+    public enum Department { IVA, Sanatorium, PatientQueue }
     public class Patient
     {
         public string Name { get; }
         public DateTime Birthday { get; }
         public int SicknessLevel { get; private set; }
+        public int DaysUnderTreatment { get; set; }
+        public Department Department { get; set; }
         public Condition Condition 
         { 
             get
@@ -27,6 +30,7 @@ namespace HospitalLibrary
         public Patient()
         {
             var rng = new Random();
+            Department = Department.PatientQueue;
             Name = HospitalManager.GenerateName();
             Birthday = DateTime.Now.AddDays(-rng.Next(1 * 365, 90 * 365)).Date;
             SicknessLevel = rng.Next(0, 10);
