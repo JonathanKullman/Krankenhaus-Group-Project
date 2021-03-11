@@ -37,8 +37,6 @@ namespace Krankenhaus
             {
                 isRunning = true;
             }
-
-
         }
         internal void EveryTick(object state)
         {
