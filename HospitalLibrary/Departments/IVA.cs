@@ -7,6 +7,8 @@ namespace HospitalLibrary
 {
     public class IVA : IDepartment, IDepartmentList
     {
+        private readonly object patientRemovalLock = new object();
+
         private int risk;
         public int Risk
         {
@@ -100,7 +102,10 @@ namespace HospitalLibrary
         }
         public void RemovePatient(Patient patient)
         {
-            patients.Remove(patient);
+            lock (patientRemovalLock)
+            {
+                patients.Remove(patient);
+            }
         }
         public int PatientsCount()
         {

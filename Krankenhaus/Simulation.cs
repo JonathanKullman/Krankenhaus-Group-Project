@@ -60,7 +60,7 @@ namespace Krankenhaus
 
                 Hospital.OnTick(DayCounter);
 
-                Screen.PrintToSCreen(this);
+                Task.Run(() => { Screen.PrintToSCreen(this); });
                 Logger.WriteToFile(Hospital.Clone());
 
 

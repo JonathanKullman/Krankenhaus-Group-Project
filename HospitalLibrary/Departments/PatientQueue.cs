@@ -6,6 +6,7 @@ namespace HospitalLibrary
 {
     public class PatientQueue : IDepartment
     {
+        private readonly object patientLock = new object();
         public int Risk { get; }
         public int Chance { get; }
 
@@ -26,9 +27,10 @@ namespace HospitalLibrary
         }
         public void OnTickChanges(object state)
         {
-
-            
-            CopyPatientsToArray().ToList().ForEach(patient => patient.CalculateNewHealth(this));
+            lock (patientLock)
+            {
+                CopyPatientsToArray().ToList().ForEach(patient => patient.CalculateNewHealth(this));
+            }
             if (state != null)
             {
                 var hp = state as Hospital;
@@ -36,7 +38,7 @@ namespace HospitalLibrary
                 {
                     for (int i = 0; i < PatientsCount(); i++)
                     {
-                        var p = patients.Dequeue();
+                        var p = Dequeue();
                         if (p.Condition == Condition.Deceased)
                         {
                             p.DaysPassed = hp.CurrentDay;
@@ -60,7 +62,10 @@ namespace HospitalLibrary
         }
         internal Patient Dequeue()
         {
-            return patients.Dequeue();
+            lock (patientLock)
+            {
+                return patients.Dequeue();
+            }
         }
         public int PatientsCount()
         {

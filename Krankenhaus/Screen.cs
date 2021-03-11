@@ -10,23 +10,25 @@ namespace Krankenhaus
     {
         internal static void PrintToSCreen(Simulation sim)
         {
+            var dayCounter = sim.DayCounter;
+            var hp = sim.Hospital.Clone();
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine();
             Console.Write("\n\t\t\t\t\t           Current Tick/Cycle: ");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write($"{sim.DayCounter}");
+            Console.Write($"{dayCounter}");
             Console.ResetColor();
 
             //CURRENT PATIENTS IN QUEUE DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t       <<< Patients in Queue [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{sim.Hospital.PatientQueue.PatientsCount()}");
+            Console.Write($"{hp.PatientQueue.PatientsCount()}");
             Console.ResetColor();
             Console.Write("] >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            var tempArray = sim.Hospital.PatientQueue.CopyPatientsToArray();
+            var tempArray = hp.PatientQueue.CopyPatientsToArray();
 
             for (int i = 0; i < tempArray.Length; i++)
             {
@@ -47,13 +49,13 @@ namespace Krankenhaus
             //EXTRA DOCTORS DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t      <<<   Extra Doctors [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{sim.Hospital.ExtraDoctorsCount()}");
+            Console.Write($"{hp.ExtraDoctorsCount()}");
             Console.ResetColor();
             Console.Write("]  >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
 
-            foreach (ExtraDoctor doctor in sim.Hospital.CopyExtraDoctorsToArray())
+            foreach (ExtraDoctor doctor in hp.CopyExtraDoctorsToArray())
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write("\n\t                Name: ");
@@ -73,12 +75,12 @@ namespace Krankenhaus
             //SANATORIUM PATIENTS DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t  <<<   Sanatorium Patients [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{sim.Hospital.Sanatorium.PatientsCount()}");
+            Console.Write($"{hp.Sanatorium.PatientsCount()}");
             Console.ResetColor();
             Console.Write("]  >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            foreach (Patient patient in sim.Hospital.Sanatorium)
+            foreach (Patient patient in hp.Sanatorium)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write("\n\t\t\t          Name: ");
@@ -93,12 +95,12 @@ namespace Krankenhaus
             //IVA PATIENTS DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t      <<<   IVA Patients [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{sim.Hospital.Iva.PatientsCount()}");
+            Console.Write($"{hp.Iva.PatientsCount()}");
             Console.ResetColor();
             Console.Write("]  >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            foreach (Patient patient in sim.Hospital.Iva)
+            foreach (Patient patient in hp.Iva)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write("\n\t\t\t          Name: ");
@@ -110,7 +112,7 @@ namespace Krankenhaus
                 Console.Write($"{patient.SicknessLevel}");
             }
 
-            if (sim.Hospital.Iva.ExtraDoctor != null)
+            if (hp.Iva.ExtraDoctor != null)
             {
                 //CURRENT DOCTOR DISPLAY
                 Console.WriteLine($"\n\n\n\t\t\t\t\t      <<< Current Doctor At IVA >>>");
@@ -120,28 +122,28 @@ namespace Krankenhaus
                 Console.Write("\n\t                Name: ");
                 Console.ResetColor();
 
-                Console.Write($"{sim.Hospital.Iva.ExtraDoctor.Name}");
+                Console.Write($"{hp.Iva.ExtraDoctor.Name}");
                 Console.ResetColor();
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.Write("\t     Exhausted Level: ");
                 Console.ResetColor();
-                Console.Write($"{sim.Hospital.Iva.ExtraDoctor.ExhaustedLevel}");
+                Console.Write($"{hp.Iva.ExtraDoctor.ExhaustedLevel}");
 
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.Write("\t     Competence Level: ");
                 Console.ResetColor();
-                Console.Write($"{sim.Hospital.Iva.ExtraDoctor.Competence}");
+                Console.Write($"{hp.Iva.ExtraDoctor.Competence}");
             }
 
             //AFTERLIFE PATIENTS DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t   <<<   Afterlife Patients [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{sim.Hospital.AfterLife.CountDeadPatients()}");
+            Console.Write($"{hp.AfterLife.CountDeadPatients()}");
             Console.ResetColor();
             Console.Write("]  >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            foreach (Patient patient in sim.Hospital.AfterLife)
+            foreach (Patient patient in hp.AfterLife)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write("\n\tName: ");
@@ -180,12 +182,12 @@ namespace Krankenhaus
             //HEALTHY CHECKED OUT PATIENTS DISPLAY
             Console.Write("\n\n\n\t\t\t\t\t    <<<   Checked Out Patients [");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($"{sim.Hospital.CheckedOut.CountHealthyPatients()}");
+            Console.Write($"{hp.CheckedOut.CountHealthyPatients()}");
             Console.ResetColor();
             Console.Write("]  >>>\n");
             Console.WriteLine("\t\t\t______________________________________________________________________");
 
-            foreach (Patient patient in sim.Hospital.CheckedOut)
+            foreach (Patient patient in hp.CheckedOut)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write("\n\tName: ", -50);
