@@ -145,6 +145,7 @@ namespace HospitalLibrary
                 {
                     break;
                 }
+
                 var patient = hp.PatientQueue.Dequeue();
                 if (patient.Condition == Condition.Deceased)
                 {

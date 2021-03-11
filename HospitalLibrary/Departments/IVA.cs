@@ -46,11 +46,11 @@ namespace HospitalLibrary
         public int MaxPatients { get; }
         public ExtraDoctor ExtraDoctor { get; private set; }
 
-        public IVA(Hospital hp)
+        public IVA(Hospital hp, int maxPatients)
         {
             this.ExtraDoctor = hp.DequeueExtraDoctor();
             this.patients = new List<Patient>();
-            this.MaxPatients = 5;
+            this.MaxPatients = maxPatients;
             this.risk = 10;
             this.chance = 70;
             OnTickChanges(hp);

@@ -12,9 +12,13 @@ namespace Krankenhaus
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Hospital Simulator 3000");
-            Console.WriteLine($"How many patients?");
+            Console.WriteLine($"Total number of patients: ");
             int nrOfPatients = ReadInt();
-            var simulationNr1 = new Simulation(nrOfPatients);
+            Console.WriteLine($"Enter IVA's patient limit:");
+            int iva = ReadInt();
+            Console.WriteLine($"Enter Sanatorium's patient limit:");
+            int sanatorium = ReadInt();
+            var simulationNr1 = new Simulation(nrOfPatients, iva, sanatorium);
 
             simulationNr1.Hospital.OnSendReport(simulationNr1.DayCounter);
             Screen.PrintToSCreen(simulationNr1);

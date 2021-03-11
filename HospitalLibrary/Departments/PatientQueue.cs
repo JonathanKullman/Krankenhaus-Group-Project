@@ -26,7 +26,37 @@ namespace HospitalLibrary
         }
         public void OnTickChanges(object state)
         {
+
+            
             CopyPatientsToArray().ToList().ForEach(patient => patient.CalculateNewHealth(this));
+            if (state != null)
+            {
+                var hp = state as Hospital;
+                if (hp.Iva.MaxPatients == 0 && hp.Sanatorium.MaxPatients == 0)
+                {
+                    for (int i = 0; i < PatientsCount(); i++)
+                    {
+                        var p = patients.Dequeue();
+                        if (p.Condition == Condition.Deceased)
+                        {
+                            p.DaysPassed = hp.CurrentDay;
+                            p.TimeOfCheckOut = DateTime.Now;
+                            hp.AfterLife.AddDeadPatients(p);
+                        }
+                        else if (p.Condition == Condition.Healthy)
+                        {
+                            p.DaysPassed = hp.CurrentDay;
+                            p.TimeOfCheckOut = DateTime.Now;
+                            hp.CheckedOut.AddHealthyPatients(p);
+                        }
+                        else
+                        {
+                            patients.Enqueue(p);
+                        }
+                    }
+                }
+            }
+
         }
         internal Patient Dequeue()
         {
@@ -50,6 +80,6 @@ namespace HospitalLibrary
 
             return new PatientQueue(patientsCopy, this.Risk, this.Chance);
         }
-        
+
     }
 }

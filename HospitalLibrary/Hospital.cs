@@ -15,10 +15,9 @@ namespace HospitalLibrary
         public IVA Iva { get; private set; }
         public PatientQueue PatientQueue { get; private set; }
         internal int CurrentDay { get; private set; }
-
         public event EventHandler<SendReportEventArgs> SendReport;
 
-        public Hospital(int nrOfPatients)
+        public Hospital(int nrOfPatients, int iva, int sanatorium)
         {
             extraDoctors = HospitalManager.GenerateExtraDoctors();
             CurrentDay = 1;
@@ -26,8 +25,8 @@ namespace HospitalLibrary
             CheckedOut = new CheckedOut();
 
             PatientQueue = new PatientQueue(nrOfPatients);
-            Iva = new IVA(this);
-            Sanatorium = new Sanatorium(this);
+            Iva = new IVA(this, iva);
+            Sanatorium = new Sanatorium(this, sanatorium);
             
         }
         private Hospital()

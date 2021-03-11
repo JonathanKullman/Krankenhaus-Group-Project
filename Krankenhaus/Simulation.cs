@@ -18,10 +18,10 @@ namespace Krankenhaus
         internal DateTime End { get; set; }
         private bool isRunning { get; set; }
         internal Logger Logger { get; }
-        internal Simulation(int nrOfPatients)
+        internal Simulation(int nrOfPatients, int iva, int sanatorium)
         {
             PatientsAtStart = nrOfPatients;
-            this.Hospital = new Hospital(nrOfPatients);
+            this.Hospital = new Hospital(nrOfPatients, iva, sanatorium);
             this.Logger = new Logger();
             Hospital.SendReport += Logger.WriteToFile;
             DayCounter = 1;
@@ -30,8 +30,8 @@ namespace Krankenhaus
             Timer = new List<Timer>();
             this.Timer.Add(new Timer(new TimerCallback(Hospital.Iva.OnTickChanges), Hospital, 1000, 1000 + PatientsAtStart));
             this.Timer.Add(new Timer(new TimerCallback(Hospital.Sanatorium.OnTickChanges), Hospital, 1000, 1000 + PatientsAtStart));
-            this.Timer.Add(new Timer(new TimerCallback(Hospital.PatientQueue.OnTickChanges), null, 1000, 1000 + PatientsAtStart));
-            this.Timer.Add(new Timer(new TimerCallback(Run), null, 1000, 1000 + PatientsAtStart));
+            this.Timer.Add(new Timer(new TimerCallback(Hospital.PatientQueue.OnTickChanges), Hospital, 1000, 1000 + PatientsAtStart));
+            this.Timer.Add(new Timer(new TimerCallback(Run), null, 1100, 1000 + PatientsAtStart));
         }
         internal void Paus()
         {
@@ -46,14 +46,18 @@ namespace Krankenhaus
         }
         internal void Run(object state)
         {
+
             if (isRunning)
             {
                 DayCounter++;
 
                 Hospital.OnTick(DayCounter);
+
                 Screen.PrintToSCreen(this);
 
-                if (Hospital.Iva.PatientsCount() == 0 && Hospital.Sanatorium.PatientsCount() == 0)
+
+
+                if (Hospital.PatientQueue.PatientsCount() == 0 && Hospital.Iva.PatientsCount() == 0 && Hospital.Sanatorium.PatientsCount() == 0)
                 {
                     foreach (var item in Timer)
                     {

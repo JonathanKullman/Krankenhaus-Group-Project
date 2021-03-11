@@ -12,9 +12,9 @@ namespace HospitalLibrary
 
         private List<Patient> patients;
         public int MaxPatients { get; }
-        public Sanatorium(Hospital hp)
+        public Sanatorium(Hospital hp, int maxPatients)
         {
-            MaxPatients = 10;
+            MaxPatients = maxPatients;
             Risk = 50;
             Chance = 35;
             patients = new List<Patient>();
@@ -36,6 +36,12 @@ namespace HospitalLibrary
         public void RemovePatient(Patient patient)
         {
             patients.Remove(patient);
+        }
+        internal Patient MoveToIVA()
+        {
+            var patient = patients[0];
+            patients.Remove(patient);
+            return patient;
         }
         public int PatientsCount()
         {
