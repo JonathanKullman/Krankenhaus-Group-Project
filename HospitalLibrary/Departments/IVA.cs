@@ -7,12 +7,10 @@ namespace HospitalLibrary
 {
     public class IVA : IDepartment, IDepartmentList
     {
-        private readonly object patientRemovalLock = new object();
-
         private int risk;
         public int Risk
         {
-            get 
+            get
             {
                 if (ExtraDoctor == null)
                 {
@@ -22,7 +20,7 @@ namespace HospitalLibrary
                 {
                     return 0;
                 }
-                else 
+                else
                 {
                     return risk -= ExtraDoctor.Competence;
                 }
@@ -31,7 +29,7 @@ namespace HospitalLibrary
         private int chance;
         public int Chance
         {
-            get 
+            get
             {
                 if (ExtraDoctor == null)
                 {
@@ -40,7 +38,7 @@ namespace HospitalLibrary
                 else
                 {
                     return chance += ExtraDoctor.Competence;
-                }  
+                }
             }
         }
 
@@ -76,7 +74,7 @@ namespace HospitalLibrary
                 {
                     ExtraDoctor.ExhaustedLevel += 5;
                 }
-                
+
                 if (ExtraDoctor.ExhaustedLevel >= 20)
                 {
                     if (hp.ExtraDoctorsCount() > 0)
@@ -102,10 +100,7 @@ namespace HospitalLibrary
         }
         public void RemovePatient(Patient patient)
         {
-            lock (patientRemovalLock)
-            {
-                patients.Remove(patient);
-            }
+            patients.Remove(patient);
         }
         public int PatientsCount()
         {

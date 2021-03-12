@@ -27,10 +27,8 @@ namespace HospitalLibrary
         }
         public void OnTickChanges(object state)
         {
-            lock (patientLock)
-            {
-                CopyPatientsToArray().ToList().ForEach(patient => patient.CalculateNewHealth(this));
-            }
+
+            CopyPatientsToArray().ToList().ForEach(patient => patient.CalculateNewHealth(this));
             if (state != null)
             {
                 var hp = state as Hospital;
@@ -73,9 +71,12 @@ namespace HospitalLibrary
         }
         public Patient[] CopyPatientsToArray()
         {
-            var tempPatientArray = new Patient[patients.Count];
-            patients.CopyTo(tempPatientArray, 0);
-            return tempPatientArray;
+            lock (patientLock)
+            {
+                var tempPatientArray = new Patient[patients.Count];
+                patients.CopyTo(tempPatientArray, 0);
+                return tempPatientArray;
+            }
         }
         public IDepartment Clone()
         {

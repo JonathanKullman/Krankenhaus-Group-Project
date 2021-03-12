@@ -7,7 +7,6 @@ namespace HospitalLibrary
 {
     public class Sanatorium : IDepartment, IDepartmentList
     {
-        private readonly object patientRemovalLock = new object();
         public int Risk { get; }
         public int Chance { get; }
 
@@ -36,10 +35,7 @@ namespace HospitalLibrary
         }
         public void RemovePatient(Patient patient)
         {
-            lock (patientRemovalLock)
-            {
-                patients.Remove(patient);
-            }
+            patients.Remove(patient);
         }
         internal Patient MoveToIVA()
         {
